@@ -96,7 +96,7 @@ for i in range (0,3):
     #hole_temp_acc.append(acc_profile[0])
     vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05, vel_start, feedrate[i])
     vel_start = vel_profile[2]
-    print(vel_start)
+    print(Work_with_files.Write_log("Максимальная скорость на блоке: " + str(vel_profile[3]) + " мм/с."))
     hole_temp_time.append(vel_profile[1])
     hole_temp_vel.append(vel_profile[0])
 
