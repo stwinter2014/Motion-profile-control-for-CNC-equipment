@@ -18,7 +18,7 @@ import math
 path_code = ["010", "010", "010"]
 
 """Данные об обработке"""
-feedrate = [10, 12, 14]
+feedrate = [10, 12, 8]
 max_acceleration = 5
 max_deceleration = 5
 time_periods = []
@@ -74,7 +74,7 @@ for i in range (len(path_code)):
     else:
         print(Work_with_files.Write_log("Тип пути не определен."))
 
-path_l_list[0] = 10
+path_l_list[0] = 90
 path_l_list[1] = 100
 path_l_list[2] = 60
 "Генерация профиля ускорения и скорости."
