@@ -18,7 +18,7 @@ import math
 path_code = ["010", "010", "010"]
 
 """Данные об обработке"""
-feedrate = [10, 8, 12]
+feedrate = [10, 8, 12, 13]
 max_acceleration = 5
 max_deceleration = 5
 time_periods = []
@@ -74,13 +74,14 @@ for i in range (len(path_code)):
     else:
         print(Work_with_files.Write_log("Тип пути не определен."))
 
-path_l_list[0] = 10
+path_l_list[0] = 90
 path_l_list[1] = 100
 path_l_list[2] = 60
-
+path_l_list.append(70)
 "Генерация профиля ускорения и скорости."
 print(Work_with_files.Write_log("Генерирование профиля скорости."))
-for i in range (0,3):
+times = []
+for i in range (0,4):
     if feedr_n == len(feedrate)-1:
         print(Work_with_files.Write_log("Блок " + str(i+1) + ", последний."))
     else:
@@ -88,6 +89,7 @@ for i in range (0,3):
     feedr_n = i
     time_periods = Block_type.Time_Generator_n_la(feedrate, feedr_n, path_l_list[i], max_acceleration, max_deceleration, vel_start)
     print(time_periods)
+    times.append(time_periods)
     print(Work_with_files.Write_log("Время разгона: " + str(time_periods[0]) + " с."))
     print(Work_with_files.Write_log("Время постоянной скорости: " + str(time_periods[1]) + " с."))
     print(Work_with_files.Write_log("Время торможения: " + str(time_periods[2]) + " с."))
@@ -101,6 +103,6 @@ for i in range (0,3):
     hole_temp_vel.append(vel_profile[0])
 
 hole_profile = Profile_generation.Generation_hole_profile(hole_temp_vel, hole_temp_time)
-Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время", "Скорость", "Профиль скорости", "Скорость")
+Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время", "Скорость", "Профиль скорости", "Скорость", times)
 #hole_profile = Profile_generation.Generation_hole_profile(hole_temp_acc, hole_temp_time_1)
 #Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время", "Ускорение", "Профиль ускорения", "Ускорение")

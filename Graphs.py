@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from numpy import pi, cos, sin
 import math
 
@@ -74,13 +75,28 @@ def Jerk (acc_max, time_acc, time_const, time_dec, time_instant):
 5. Название графика.
 6. 
 """
-def Plotting_1 (x, y, name_x, name_y, name_graph, label):
+def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per):
+    time_sum = 0
+    time_sum_hole = 0
+    alph = 0.2
+    print(time_per)
     plt.plot(x,y,label=label)
+    currentAxis = plt.gca()
+    for i in range (len(time_per)):
+        for j in range (len(time_per[i])-1):
+            time_sum += time_per[i][j]
+        currentAxis.add_patch(mpl.patches.Rectangle((time_sum_hole, -10), time_sum, 100, alpha=alph, color='#D5D0CF'))
+        time_sum_hole += time_sum
+        time_sum = 0
+        if i%2 == 0:
+            alph += 0.2
+        else:
+            alph -= 0.2
     plt.xlabel(name_x)
     plt.ylabel(name_y)
     plt.title(name_graph)
     plt.legend()
-    plt.grid(b=None, which='major', axis='both')
+    plt.grid(b=None, which='major', axis='both', color = 'w')
     plt.show()
  
 def Plotting_2 (x, y, x2, y2, name_x, name_y1, name_y2, name_graph1, name_graph2):
