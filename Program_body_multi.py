@@ -59,7 +59,6 @@ for i in range (0,3):
         print("Длина пути: ", path_l_list[i])
     else:
         print("Тип пути не определен.")
-
     """Проверка типа блока (обычный или короткий)"""
     type_block = Block_type.block_t_check(path_l_list[i], feedrate[i], max_acceleration, max_deceleration)
     if type_block[0] == 1:
@@ -89,5 +88,5 @@ for i in range (0,3):
         print("Тип блока - короткий")
     print("Обработка блока ", i+1, " закончена.")
     print("______________________________________")
-Graphs.Plotting_1(time_x_list, acc_list, "Время, с", "Ускорение, мм/с2", "Профиль ускорения", "Ускорение")
-Graphs.Plotting_1(time_x_list, vel_list, "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость")
+Graphs.Plotting_01(time_x_list, acc_list, "Время, с", "Ускорение, мм/с2", "Профиль ускорения", "Ускорение")
+Graphs.Plotting_01(time_x_list, vel_list, "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость")

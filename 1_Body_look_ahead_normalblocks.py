@@ -80,7 +80,7 @@ path_l_list[2] = 60
 "Генерация профиля ускорения и скорости."
 print(Work_with_files.Write_log("Генерирование профиля скорости."))
 times = []
-for i in range (0,3):
+for i in range (len(feedrate)):
     if  i == 0 and feedr_n == len(feedrate)-1:
         print(Work_with_files.Write_log("Блок " + str(i+1) + ", единичный."))
     elif i != 0 and feedr_n == len(feedrate)-1:

@@ -79,7 +79,6 @@ def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per):
     time_sum = 0
     time_sum_hole = 0
     alph = 0.2
-    print(time_per)
     plt.plot(x,y,label=label)
     currentAxis = plt.gca()
     for i in range (len(time_per)):
@@ -98,7 +97,16 @@ def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per):
     plt.legend()
     plt.grid(b=None, which='major', axis='both', color = 'w')
     plt.show()
- 
+
+def Plotting_01 (x, y, name_x, name_y, name_graph, label):
+    plt.plot(x,y,label=label)
+    plt.xlabel(name_x)
+    plt.ylabel(name_y)
+    plt.title(name_graph)
+    plt.legend()
+    plt.grid(b=None, which='major', axis='both', color = 'w')
+    plt.show()
+
 def Plotting_2 (x, y, x2, y2, name_x, name_y1, name_y2, name_graph1, name_graph2):
     fig = plt.figure()
     fig1 = fig.add_subplot(211)
