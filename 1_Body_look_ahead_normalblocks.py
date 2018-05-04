@@ -18,7 +18,7 @@ import math
 path_code = ["010", "010", "010"]
 
 """Данные об обработке"""
-feedrate = [10, 12, 8]
+feedrate = [10, 12, 8, 9]
 max_acceleration = 5
 max_deceleration = 5
 time_periods = []
@@ -77,6 +77,7 @@ for i in range (len(path_code)):
 path_l_list[0] = 90
 path_l_list[1] = 100
 path_l_list[2] = 60
+path_l_list.append(70)
 "Генерация профиля ускорения и скорости."
 print(Work_with_files.Write_log("Генерирование профиля скорости."))
 times = []
