@@ -188,20 +188,3 @@ def path_linear (start_points, finish_points):
         length_path = math.sqrt(length_path)
         length_path = math.sqrt(math.pow(length_path, 2) + math.pow(length_axes_list[2], 2))
     return length_path
-
-"""Функция подсчета угла между участками траектории а и б.
-На вход подается:
-1. Стартовая точка траектории а в формате [x, y, z];
-2. Конечная точка траектории а в формате [x, y, z];
-2. Стартовая точка траектории б в формате [x, y, z];
-3. Конечная точка траектории б в формате [x, y, z].
-На выход подается список из двух занчений: [значение угла в град., значение угла в радианах].
-"""
-def angle_calculator(start_point_last, finish_point_last, start_point_next, finish_point_next):
-    length_last = path_linear(start_point_last, finish_point_last)
-    length_next = path_linear(start_point_next, finish_point_next)
-    length_between = path_linear(start_point_last, finish_point_next)
-    gamma = math.acos((math.pow(length_next,2)+math.pow(length_last,2)-math.pow(length_between,2))/(2*length_last*length_next))
-    acute_angle_1 = 180 - math.degrees(gamma)
-    acute_angle_2 = math.pi - gamma
-    return acute_angle_1, acute_angle_2
