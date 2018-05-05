@@ -31,7 +31,7 @@ print(Work_with_files. Write_log("Анализ длины участков тр�
 for i in range (len(st_point)):
     print(Work_with_files.Write_log("Подсчет длины пути блока " + str(i+1) + "."))
     print(Work_with_files.Write_log("Тип интерполяции - линейный."))
-    path_l = Path_length_calculator.path_linear(st_point[i], fn_point[i])
+    path_l = Path_length_calculator.Path_linear(st_point[i], fn_point[i])
     path_l_list.append(path_l)
     path_l = 0
     print(Work_with_files.Write_log("Длина пути: " + str(path_l_list[i]) + " мм."))
@@ -45,3 +45,4 @@ for i in range (len(angles)):
 print("_________________")
 "Построение траектории запрограммированной и истинной с учетом скругления углов"
 Trajectory_mapping.Trajectory_mapping(st_point, fn_point, tolerance_angle)
+

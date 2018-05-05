@@ -158,7 +158,7 @@ def path_circular_p (start_points, finish_points, center_points, way):
 На выход подается:
 1. Длина траектории, мм (число типа float)
 """
-def path_linear (start_points, finish_points):
+def Path_linear (start_points, finish_points):
     length_path = 0
     length_axes_list = []
     length_axes = 0

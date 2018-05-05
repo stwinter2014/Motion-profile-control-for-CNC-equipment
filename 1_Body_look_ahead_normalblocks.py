@@ -55,7 +55,7 @@ for i in range (len(path_code)):
     """Подсчет длины пути"""
     if type_path == 1:
         print(Work_with_files.Write_log("Тип интерполяции - линейный."))
-        path_l = Path_length_calculator.path_linear(st_point[i], fn_point[i])
+        path_l = Path_length_calculator.Path_linear(st_point[i], fn_point[i])
         path_l_list.append(path_l)
         path_l = 0
         print(Work_with_files.Write_log("Длина пути: " + str(path_l_list[i]) + " мм."))
