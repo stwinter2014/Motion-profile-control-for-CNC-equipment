@@ -120,10 +120,8 @@ def Corner_feedrate(feedrate_1, feedrate_2, length_1, length_2, start_point_1, f
     Vy2 = feedrate_2*((finish_point_2[1]-start_point_2[1])/length_2)
     deltaVx = math.fabs(Vx2 - Vx1)
     deltaVy = math.fabs(Vy2 - Vy1)
-    del1 = acc/deltaVx
-    del2 = acc/deltaVy
-    delta_list.append(acc/deltaVx)
-    delta_list.append(acc/deltaVy)
+    delta_list.append(acc[0]/deltaVx)
+    delta_list.append(acc[1]/deltaVy)
     Q = min(delta_list)
     if Q >= 1:
         feedrate_angle = feedrate_1
