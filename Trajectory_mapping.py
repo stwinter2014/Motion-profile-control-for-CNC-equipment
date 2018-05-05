@@ -2,6 +2,7 @@ import math
 import Graphs
 import Spline
 import Path_length_calculator
+
 """Функция подсчета угла между участками траектории а и б.
 На вход подается:
 1. Стартовая точка траектории а в формате [x, y, z];
@@ -19,6 +20,13 @@ def Angle_calculator(start_point_last, finish_point_last, start_point_next, fini
     acute_angle_2 = math.pi - gamma
     return acute_angle_1, acute_angle_2
 
+"""Функция анализа траектории: выявление углов между участками траектории.
+На вход подается:
+1. Список координат начальных точек в формате [x, y, z] в мм;
+2. Список координат конечных точек в формате [x, y, z] в мм.
+На выход подается:
+1. Список углов между участками траектории в градусах.
+"""
 def Trajectory_analisys(start_points, finish_points):
     angle_list = []
     for i in range (len(start_points)-1):
@@ -26,6 +34,14 @@ def Trajectory_analisys(start_points, finish_points):
         angle_list.append(round(angle[0], 1))
     return angle_list
 
+"""Функция построения траектории движения инструмента, истинной и запрограммированной.
+На вход подается:
+1. Список координат начальных точек в формате [x, y, z] в мм;
+2. Список координат конечных точек в формате [x, y, z] в мм;
+3. Список степеней точности обработки углов в мм.
+На выход подается:
+1. График, содержащий запрограммированную и истинную траектории инструмента.
+"""
 def Trajectory_mapping(start_points, finish_points, tolerance_list):
     x_points = []
     y_points = []
