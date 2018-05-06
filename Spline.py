@@ -33,7 +33,7 @@ def Point_find (start_point, finish_point, length_part, way_to_search):
 На выход подается:
 1. Список точек кривой Безье в формате [x, y, z];
 """
-def Spline_generator(start_point, transition_point, end_point):
+def Spline_3_generator(start_point, transition_point, end_point):
     frst_length = Path_length_calculator.Path_linear(start_point, transition_point)
     scnd_length = Path_length_calculator.Path_linear(transition_point, end_point)
     spline_coord = []
@@ -51,6 +51,42 @@ def Spline_generator(start_point, transition_point, end_point):
         t = round(t,2)
     return spline_coord
 
+def Spline_6(spline_tolerance, ratio, start_point_1, finish_point_1, start_point_2, finish_point_2):
+    x_coord = []
+    y_coord = []
+    z_coord = []
+    x_trajectory = []
+    y_trajectory = []
+    z_trajectory = []
+    d = spline_tolerance/(2*ratio+1)
+    cd = d + ratio*d
+    t = 0
+    point_1 = Point_find(start_point_1, finish_point_1, spline_tolerance, 0)
+    point_6 = Point_find(start_point_2, finish_point_2, spline_tolerance, 1)
+    point_2 = Point_find(start_point_1, finish_point_1, cd, 0)
+    point_3 = Point_find(start_point_1, finish_point_1, d, 0)
+    point_4 = Point_find(start_point_2, finish_point_2, d, 1)
+    point_5 = Point_find(start_point_2, finish_point_2, cd, 1)
+    x_trajectory.append(point_1[0])
+    x_trajectory.append(finish_point_1[0])
+    x_trajectory.append(point_6[0])
+    y_trajectory.append(point_1[1])
+    y_trajectory.append(finish_point_1[1])
+    y_trajectory.append(point_6[1])
+    z_trajectory.append(point_1[2])
+    z_trajectory.append(finish_point_1[2])
+    z_trajectory.append(point_6[2])
+    while t >= 0 and t <= 1:
+        x = math.pow((1-t), 5)*point_1[0] + 5*t*math.pow((1-t), 4)*point_2[0] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[0] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[0] + 5*math.pow(t, 4)*(1-t)*point_5[0] + math.pow(t, 5)*point_6[0]
+        y = math.pow((1-t), 5)*point_1[1] + 5*t*math.pow((1-t), 4)*point_2[1] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[1] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[1] + 5*math.pow(t, 4)*(1-t)*point_5[1] + math.pow(t, 5)*point_6[1]
+        z = math.pow((1-t), 5)*point_1[2] + 5*t*math.pow((1-t), 4)*point_2[2] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[2] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[2] + 5*math.pow(t, 4)*(1-t)*point_5[2] + math.pow(t, 5)*point_6[2]
+        x_coord.append(x)
+        y_coord.append(y)
+        z_coord.append(z)
+        t += 0.05
+        t = round(t,2)
+    return x_coord, y_coord, z_coord, x_trajectory, y_trajectory, z_trajectory
+
 """
 Функция создания кривой Безье.
 На вход подается:
@@ -64,7 +100,7 @@ def Spline_generator(start_point, transition_point, end_point):
 2. Список координат y кривой Безье;
 3. Список координат x теоретической траектории;
 4. Список координат y теоретической траектории."""
-def Spline (start_point_1, finish_point_1, start_point_2, finish_point_2, spline_tolerance):
+def Spline_3(start_point_1, finish_point_1, start_point_2, finish_point_2, spline_tolerance):
     if finish_point_1 != start_point_2:
         print("Участки траеткории не соединены.")
         return 0,0,0,0
@@ -91,7 +127,7 @@ def Spline (start_point_1, finish_point_1, start_point_2, finish_point_2, spline
         spline_y.append(start_spline[1])
         spline_y.append(trans_p[1])
         spline_y.append(finish_spline[1])
-        coord = Spline_generator(start_spline, trans_p, finish_spline)
+        coord = Spline_3_generator(start_spline, trans_p, finish_spline)
         for i in range (len(coord)):
             x_coord.append(coord[i][0])
             y_coord.append(coord[i][1])

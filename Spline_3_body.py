@@ -13,7 +13,7 @@ finish_p_2 = [22, 0, 0]
 "Степень точности обхода угла"
 tolerance = 3
 "Построение сплайна"
-Axes_spline_list = Spline.Spline(start_p_1, finish_p_1, start_p_2, finish_p_2, tolerance)
+Axes_spline_list = Spline.Spline_3(start_p_1, finish_p_1, start_p_2, finish_p_2, tolerance)
 "Построение графиков со сплайном и теоретической траекторией"
 Graphs.Plotting_02(Axes_spline_list[0], Axes_spline_list[1], Axes_spline_list[3], Axes_spline_list[4],
                    "x", "y", "Bézier curve", "Spline", "Theoretic trajectory")
