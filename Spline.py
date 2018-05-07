@@ -88,7 +88,7 @@ def Spline_6(spline_tolerance, ratio, start_point_1, finish_point_1, start_point
     return x_coord, y_coord, z_coord, x_trajectory, y_trajectory, z_trajectory
 
 """
-Функция создания кривой Безье.
+Функция создания кривой Безье по трем точкам.
 На вход подается:
 1. Начальная точка первого участка траектории в формате [x, y, z];
 2. Конечная точка первого участка траектории в формате [x, y, z];

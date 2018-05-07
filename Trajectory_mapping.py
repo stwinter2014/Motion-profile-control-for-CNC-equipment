@@ -34,7 +34,7 @@ def Trajectory_analisys(start_points, finish_points):
         angle_list.append(round(angle[0], 1))
     return angle_list
 
-"""Функция построения траектории движения инструмента, истинной и запрограммированной.
+"""Функция построения траектории движения инструмента, истинной с учетом углов и запрограммированной.
 На вход подается:
 1. Список координат начальных точек в формате [x, y, z] в мм;
 2. Список координат конечных точек в формате [x, y, z] в мм;
@@ -42,12 +42,15 @@ def Trajectory_analisys(start_points, finish_points):
 На выход подается:
 1. График, содержащий запрограммированную и истинную траектории инструмента.
 """
-def Trajectory_mapping(start_points, finish_points, tolerance_list):
+def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list):
     x_points = []
     y_points = []
     spline = []
     spline_x = []
     spline_y = []
+    spline_x_out = []
+    spline_y_out = []
+    spline_z_out = []
     for i in range (len(start_points)):
         x_points.append(start_points[i][0])
         x_points.append(finish_points[i][0])
@@ -56,11 +59,17 @@ def Trajectory_mapping(start_points, finish_points, tolerance_list):
     spline_x.append(start_points[0][0])
     spline_y.append(start_points[0][1])
     for i in range (len(start_points)-1):
-        spline = Spline.Spline(start_points[i], finish_points[i], start_points[i+1], finish_points[i+1], tolerance_list[i])
+        spline = Spline.Spline_6(tolerance_list[i], ratio_list[i], start_points[i], finish_points[i], start_points[i+1], finish_points[i+1])
+        spline_x_out.append(spline[0])
+        spline_y_out.append(spline[1])
+        spline_z_out.append(spline[2])
+        Graphs.Plotting_02(spline[0], spline[1], spline[3], spline[4],
+                           "Ось x", "Ось y", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
         for j in range (len(spline[0])):
             spline_x.append(spline[0][j])
             spline_y.append(spline[1][j])
     spline_x.append(finish_points[len(start_points)-1][0])
     spline_y.append(finish_points[len(finish_points)-1][1])
-    Graphs.Plotting_02(spline_x, spline_y, x_points, y_points,
+    Graphs.Plotting_02(spline_x, spline_y, x_points, y_points, 
                        "Ось x", "Ось y", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
+    return spline_x_out, spline_y_out, spline_z_out
