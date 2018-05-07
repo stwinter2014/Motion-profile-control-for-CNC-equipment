@@ -2,6 +2,8 @@ import Work_with_files
 import Path_length_calculator
 import Trajectory_mapping
 import Spline
+import Block_type
+import Profile_generation
 import Graphs
 
 """Исходные данные траектории"""
@@ -75,4 +77,50 @@ for i in range (len(path_l_list)):
     else:
         path_l_list[i] = path_l_list[i]- tolerance_angle[i] - tolerance_angle[i-1]
     print(Work_with_files.Write_log("Длина пути с учетом скругления угла: " + str(round(path_l_list[i], 4)) + " мм."))
+path_list = []
+feedrate_list = []
+for i in range (len(path_l_list)-1):
+    path_list.append(path_l_list[i])
+    path_list.append(length_angles_list[i])
+    feedrate_list.append(feedrate_input[i])
+    feedrate_list.append(feedrate_angles_list[i])
+path_list.append(path_l_list[3])
+feedrate_list.append(feedrate_input[3])
+print(path_list)
+print(feedrate_list)
 print("_________________")
+"Генерация профилей ускорения и скорости"
+print(Work_with_files.Write_log("Генерирование профиля скорости."))
+times = []
+feedrate_number = 0
+vel_start = 0
+hole_temp_time = []
+hole_temp_vel = []
+for i in range (len(feedrate_list)):
+    if  i == 0 and feedrate_number == len(feedrate_list)-1:
+        print(Work_with_files.Write_log("Блок " + str(i+1) + ", единичный."))
+    elif i != 0 and feedrate_number == len(feedrate_list)-1:
+        print(Work_with_files.Write_log("Блок " + str(i+1) + ", последний."))
+    else:
+        print(Work_with_files.Write_log("Блок " + str(i+1) + "."))
+    feedrate_number = i
+    time_periods = Block_type.Time_Generator_n_la(feedrate_list, feedrate_number, path_list[i], max_acceleration, max_deceleration, vel_start)
+    print(time_periods)
+    times.append(time_periods)
+    print(Work_with_files.Write_log("Время разгона: " + str(time_periods[0]) + " с."))
+    print(Work_with_files.Write_log("Время постоянной скорости: " + str(time_periods[1]) + " с."))
+    print(Work_with_files.Write_log("Время торможения: " + str(time_periods[2]) + " с."))
+    #acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05)
+    #hole_temp_time_1.append(acc_profile[1])
+    #hole_temp_acc.append(acc_profile[0])
+    vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05, vel_start, feedrate_list[i])
+    vel_start = vel_profile[2]
+    print(Work_with_files.Write_log("Максимальная скорость на блоке: " + str(vel_profile[3]) + " мм/с."))
+    hole_temp_time.append(vel_profile[1])
+    hole_temp_vel.append(vel_profile[0])
+
+hole_profile = Profile_generation.Generation_hole_profile(hole_temp_vel, hole_temp_time)
+Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время", "Скорость", "Профиль скорости", "Скорость", times)
+#hole_profile = Profile_generation.Generation_hole_profile(hole_temp_acc, hole_temp_time_1)
+#Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время", "Ускорение", "Профиль ускорения", "Ускорение")
+
