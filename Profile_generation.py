@@ -2,11 +2,17 @@ import matplotlib.pyplot as plt
 from numpy import pi, cos, sin
 import math
 
-def Acceleration_profile (acc_max, time_acc, time_const, time_dec, time_instant):
+def Acceleration_profile (acc_max, time_acc, time_const, time_dec, time_instant, acc_st):
     acc_list = []
     time_acclist = []
+    acc = acc_st
+    dec = 0
+    #acc_zero = 0
+    acc_out = 0
+    check = 0
+    #acc_max = 0
     while time_instant < time_acc:
-        acc = acc_max/2*(1-math.cos((2*pi)/time_acc*time_instant))
+        acc = acc_st + acc_max/2*(1-math.cos((2*pi)/time_acc*time_instant))
         acc_list += [acc]
         time_acclist += [time_instant]
         time_instant = time_instant + 0.1
@@ -16,11 +22,18 @@ def Acceleration_profile (acc_max, time_acc, time_const, time_dec, time_instant)
         time_acclist += [time_instant]
         time_instant = time_instant + 0.1
     while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
+        check = 1
         dec = -acc_max/2*(1-math.cos((2*pi)/time_dec*(time_instant-(time_acc+time_const))))
         acc_list += [dec]
         time_acclist += [time_instant]
         time_instant = time_instant + 0.1
-    return acc_list, time_acclist
+    if dec == 0 and check == 0:
+        acc_out = acc
+    elif dec == 0 and check == 1:
+        acc_out = dec
+    else:
+        acc_out = dec
+    return acc_list, time_acclist, acc_out
 
 """Функция генерации профиля скорости.
 На вход подается:

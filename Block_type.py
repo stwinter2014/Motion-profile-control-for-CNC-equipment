@@ -40,7 +40,7 @@ def block_t_check_la (length, feedrate, max_acc, max_dec):
 1. Время разгона;
 2. Время постоянной скорости;
 3. Время торможения."""
-def Time_Generator_n_la(feedrate, number, length, max_acc, max_dec, vel_last):
+def Time_Generator_lookahead(feedrate, number, length, max_acc, max_dec, vel_last):
     if number == 0 and number < len(feedrate)-1:
         if feedrate[number] <= feedrate[number+1]:
             time_acc = 2*feedrate[number]/max_acc
