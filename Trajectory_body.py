@@ -1,3 +1,4 @@
+import math
 import Work_with_files
 import Path_length_calculator
 import Trajectory_mapping
@@ -24,17 +25,18 @@ max_deceleration = 5
 "Степень точности обработки углов"
 tolerance_angle = [3, 3, 3]
 ratio = [0.9, 0.8, 0.8]
+optimal_ratio = []
 
 """Тело программы"""
 Work_with_files.Clear_log()
 """Анализ траектории"""
-print(Work_with_files.Write_log("Анализ величин подачи участков траектории"))
+print(Work_with_files.Write_log("Анализ величин подачи участков траектории."))
 for i in range (len(feedrate_input)):
     print(Work_with_files.Write_log("Заданная величина подачи для блока " + str(i+1) + " равна " + str(feedrate_input[i]) + " мм/с."))
 print("_________________")
 "Подсчет длины участков траектории"
 path_l_list = []
-print(Work_with_files.Write_log("Анализ длины участков траектории"))
+print(Work_with_files.Write_log("Анализ длины участков траектории."))
 for i in range (len(st_point)):
     print(Work_with_files.Write_log("Подсчет длины пути блока " + str(i+1) + "."))
     print(Work_with_files.Write_log("Тип интерполяции - линейный."))
@@ -44,15 +46,18 @@ for i in range (len(st_point)):
     print(Work_with_files.Write_log("Длина пути: " + str(round(path_l_list[i], 4)) + " мм."))
 print("_________________")
 "Определение углов между участками траектории"
-print(Work_with_files.Write_log("Анализ углов участков траектории"))
+print(Work_with_files.Write_log("Анализ углов участков траектории."))
 angles = Trajectory_mapping.Trajectory_analisys(st_point, fn_point)
 for i in range (len(angles)):
     print(Work_with_files.Write_log(
         "Между участками " + str(i+1) + " и " + str (i+2) + " имеется угол в " + str(angles[i]) + " град."))
+    
+    optimal_ratio.append(round(1/(2.0769)*math.pow(math.radians(angles[i]), 0.9927), 2))
+    print(Work_with_files.Write_log("Оптимальное отношение сторон c и d равно " + str(optimal_ratio[i]) + "."))
 "Построение траектории запрограммированной и истинной с учетом скругления углов"
 spline_coord = Trajectory_mapping.Trajectory_mapping(st_point, fn_point, tolerance_angle, ratio)
 print("_________________")
-print(Work_with_files.Write_log("Анализ допустимой скорости в углах"))
+print(Work_with_files.Write_log("Анализ допустимой скорости в углах."))
 length_angles_list = []
 for i in range (len(spline_coord[0])):
     length_angles = Spline.Spline_length(spline_coord[0][i], spline_coord[1][i], spline_coord[2][i])
@@ -93,10 +98,14 @@ times = []
 feedrate_number = 0
 vel_start = 0
 acc_start = 0
+jerk_start = 0
 hole_temp_time = []
 hole_temp_time_1 = []
+hole_temp_time_2 = []
 hole_temp_acc = []
 hole_temp_vel = []
+hole_temp_jerk = []
+time_interpolation = 0.05
 for i in range (len(feedrate_list)):
     if  i == 0 and feedrate_number == len(feedrate_list)-1:
         print(Work_with_files.Write_log("Блок " + str(i+1) + ", единичный."))
@@ -112,11 +121,13 @@ for i in range (len(feedrate_list)):
     print(Work_with_files.Write_log("Время разгона: " + str(round(time_periods[0], 3)) + " с."))
     print(Work_with_files.Write_log("Время постоянной скорости: " + str(round(time_periods[1], 3)) + " с."))
     print(Work_with_files.Write_log("Время торможения: " + str(round(time_periods[2], 3)) + " с."))
-    acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05, acc_start)
+    "Профиль ускорения"
+    acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, acc_start)
     acc_start = acc_profile[2]
     hole_temp_time_1.append(acc_profile[1])
     hole_temp_acc.append(acc_profile[0])
-    vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05, vel_start, feedrate_list[i])
+    "Профиль скорости"
+    vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, vel_start, feedrate_list[i])
     vel_start = vel_profile[2]
     if i%2 == 0:
         print(Work_with_files.Write_log("Максимальная скорость на блоке: " + str(vel_profile[3]) + " мм/с."))
@@ -124,9 +135,17 @@ for i in range (len(feedrate_list)):
         print(Work_with_files.Write_log("Максимальная скорость на углу: " + str(vel_profile[3]) + " мм/с."))
     hole_temp_time.append(vel_profile[1])
     hole_temp_vel.append(vel_profile[0])
+    "Профиль толчка"
+    jerk_profile = Profile_generation.Jerk_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, jerk_start)
+    jerk_start = jerk_profile[2]
+    hole_temp_time_2.append(jerk_profile[1])
+    hole_temp_jerk.append(jerk_profile[0])
+
 
 hole_profile_1 = Profile_generation.Generation_hole_profile(hole_temp_vel, hole_temp_time)
 Graphs.Plotting_1(hole_profile_1[0], hole_profile_1[1], "Время", "Скорость", "Профиль скорости", "Скорость", times)
 hole_profile_2 = Profile_generation.Generation_hole_profile(hole_temp_acc, hole_temp_time_1)
 Graphs.Plotting_1(hole_profile_2[0], hole_profile_2[1], "Время", "Ускорение", "Профиль ускорения", "Ускорение", times)
+#hole_profile_3 = Profile_generation.Generation_hole_profile(hole_temp_jerk, hole_temp_time_2)
+#Graphs.Plotting_1(hole_profile_3[0], hole_profile_3[1], "Время", "Ускорение", "Профиль ускорения", "Ускорение", times)
 Graphs.Plotting_2(hole_profile_1[0], hole_profile_1[1], hole_profile_2[0], hole_profile_2[1], "Время", "Скорость", "Профиль скорости", "Скорость", "Скорость")

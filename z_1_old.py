@@ -66,6 +66,66 @@ def point_search (start_point, finish_point, length_part, way_to_search):
         
     return y_angle, x_angle
 
+def Acceleration_profile (acc_max, time_acc, time_const, time_dec, time_instant):
+    acc_list = []
+    time_acclist = []
+    while time_instant < time_acc:
+        acc = acc_max/2*(1-math.cos((2*pi)/time_acc*time_instant))
+        acc_list += [acc]
+        time_acclist += [time_instant]
+        time_instant = time_instant + 0.1
+    while time_instant >= time_acc and time_instant < time_const+time_acc:
+        acc = 0
+        acc_list += [acc]
+        time_acclist += [time_instant]
+        time_instant = time_instant + 0.1
+    while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
+        dec = -acc_max/2*(1-math.cos((2*pi)/time_dec*(time_instant-(time_acc+time_const))))
+        acc_list += [dec]
+        time_acclist += [time_instant]
+        time_instant = time_instant + 0.1
+    return acc_list, time_acclist
+
+def Velocity_profile (acc_max, time_acc, time_const, time_dec, time_instant):
+    vel_list = []
+    time_vellist = []
+    while time_instant < time_acc:
+        vel_acc = acc_max/2*(time_acc/(2*pi))*((2*pi)/time_acc*time_instant-math.sin((2*pi)/time_acc*time_instant))
+        vel_list += [vel_acc]
+        time_vellist += [time_instant]
+        time_instant = time_instant + 0.1
+    while time_instant >= time_acc and time_instant < time_const+time_acc:
+        vel_const = 1/2*acc_max*time_acc
+        vel_list += [vel_const]
+        time_vellist += [time_instant]
+        time_instant = time_instant + 0.1
+    while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
+        time_2 = time_acc+time_const
+        vel_dec = acc_max/2*(-(time_instant-time_2)-(time_acc/(2*pi))*sin((2*pi)/time_acc*(-(time_instant-time_2))))+vel_acc
+        vel_list += [vel_dec]
+        time_vellist += [time_instant]
+        time_instant = time_instant + 0.1
+    return vel_list, time_vellist
+
+def Jerk (acc_max, time_acc, time_const, time_dec, time_instant):
+    jerk_list = []
+    time_jerklist = []
+    while time_instant < time_acc:
+        jerk_acc = (acc_max*pi)/time_acc*sin((2*pi)/time_acc*time_instant)
+        jerk_list += [jerk_acc]
+        time_jerklist += [time_instant]
+        time_instant = time_instant + 0.1
+    while time_instant >= time_acc and time_instant < time_const+time_acc:
+        jerk_const = 0
+        jerk_list += [jerk_const]
+        time_jerklist += [time_instant]
+        time_instant = time_instant + 0.1
+    while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
+        jerk_dec = -(acc_max*pi)/time_acc*sin((2*pi)/time_acc*(time_instant-(time_acc+time_const)))
+        jerk_list += [jerk_dec]
+        time_jerklist += [time_instant]
+        time_instant = time_instant + 0.1
+    return jerk_list, time_jerklist
 """
 import math
 from numpy import cos, sin
