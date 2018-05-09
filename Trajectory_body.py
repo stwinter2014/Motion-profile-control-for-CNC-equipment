@@ -26,6 +26,7 @@ max_deceleration = 5
 tolerance_angle = [3, 3, 3]
 ratio = [0.9, 0.8, 0.8]
 optimal_ratio = []
+optimal_agree_list = [1,1,1]
 
 """Тело программы"""
 Work_with_files.Clear_log()
@@ -55,7 +56,7 @@ for i in range (len(angles)):
     optimal_ratio.append(round(1/(2.0769)*math.pow(math.radians(angles[i]), 0.9927), 2))
     print(Work_with_files.Write_log("Оптимальное отношение сторон c и d равно " + str(optimal_ratio[i]) + "."))
 "Построение траектории запрограммированной и истинной с учетом скругления углов"
-spline_coord = Trajectory_mapping.Trajectory_mapping(st_point, fn_point, tolerance_angle, ratio)
+spline_coord = Trajectory_mapping.Trajectory_mapping(st_point, fn_point, tolerance_angle, ratio, optimal_ratio, optimal_agree_list)
 print("_________________")
 print(Work_with_files.Write_log("Анализ допустимой скорости в углах."))
 length_angles_list = []
@@ -105,7 +106,7 @@ hole_temp_time_2 = []
 hole_temp_acc = []
 hole_temp_vel = []
 hole_temp_jerk = []
-time_interpolation = 0.05
+time_interpolation = 0.0025
 for i in range (len(feedrate_list)):
     if  i == 0 and feedrate_number == len(feedrate_list)-1:
         print(Work_with_files.Write_log("Блок " + str(i+1) + ", единичный."))

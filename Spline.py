@@ -162,7 +162,9 @@ def Corner_feedrate(feedrate_1, feedrate_2, length_1, length_2, start_point_1, f
     if Q >= 1:
         feedrate_angle = feedrate_1
     else:
-        feedrate_angle = round(feedrate_1*Q, 3)
+        feedrate_angle_1 = round(feedrate_1*Q, 3)
+        feedrate_angle_2 = round(feedrate_2*Q, 3)
+        feedrate_angle = min(feedrate_angle_1, feedrate_angle_2)
     return feedrate_angle
 
 """Функция подсчета длины траектории на сглаженном углу (сплайне).

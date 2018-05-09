@@ -41,7 +41,7 @@ for i in range (0,3):
     """Подсчет длины пути"""
     if type_path == 1:
         print("Тип интерполяции - линейный.")
-        path_l = Path_length_calculator.path_linear(st_point, fn_point)
+        path_l = Path_length_calculator.Path_linear(st_point, fn_point)
         path_l_list.append(path_l)
         path_l = 0
         print("Длина пути: ", path_l_list[i])
@@ -68,7 +68,7 @@ for i in range (0,3):
         print("Время разгона: ", time_list[i][0])
         print("Время постоянной скорости: ", time_list[i][1])
         print("Время торможения: ", time_list[i][2])
-        acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_list[i][0], time_list[i][1], time_list[i][2], 0.05)
+        acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_list[i][0], time_list[i][1], time_list[i][2], 0.05, 0)
         for j in range (0, len(acc_profile[0])):
             acc_list.append(acc_profile[0][j])
         if i > 0:

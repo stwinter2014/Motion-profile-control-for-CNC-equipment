@@ -11,7 +11,7 @@ def Jerk_profile (acc_max, time_acc, time_const, time_dec, time_instant, jerk_st
     jerk_out = 0
     check = 0
     while time_instant < time_acc:
-        jerk_acc = jerk_st + (acc_max*pi)/time_acc*sin((2*pi)/time_acc*time_instant)
+        jerk_acc = (acc_max*pi)/time_acc*sin((2*pi)/time_acc*time_instant)
         jerk_list += [jerk_acc]
         time_jerklist += [time_instant]
         time_instant = time_instant + 0.1
@@ -105,7 +105,7 @@ def Velocity_profile (acc_max, time_acc, time_const, time_dec, time_instant, vel
     check = 0
     vel_max = 0
     while time_instant < time_acc:
-        vel_acc = vel_st + acc_max/2*(time_acc/(2*pi))*((2*pi)/time_acc*time_instant-math.sin((2*pi)/time_acc*time_instant))
+        vel_acc = vel_st + acc_max/2*(time_acc/(2*pi))*((2*pi)/time_acc*time_instant-sin((2*pi)/time_acc*time_instant))
         vel_list += [vel_acc]
         time_vellist += [time_instant]
         time_instant = time_instant + time_interpolation
@@ -135,6 +135,46 @@ def Velocity_profile (acc_max, time_acc, time_const, time_dec, time_instant, vel
         vel_out = vel_dec
     return vel_list, time_vellist, vel_out, vel_max
 
+def Displacement_profile (acc_max, time_acc, time_const, time_dec, time_inst, dis_start):
+    dis_list = []
+    dis_list_temp = []
+    time_dislist = []
+    check = 0
+    check_1 = 0
+    dis_dec_max = 0
+    time_interpolation = time_inst
+    time_instant = 0
+    while time_instant < time_acc:
+        dis_acc = (acc_max/2)*math.pow((time_acc/(2*math.pi)),2)*(1/2*math.pow((2*math.pi)/time_acc*time_instant, 2)-
+                                                                (1-math.cos((2*math.pi)/time_acc*time_instant)))
+        dis_list += [dis_acc]
+        time_dislist += [time_instant]
+        time_instant = time_instant + time_interpolation
+        dis_plus = dis_start
+    while time_instant >= time_acc and time_instant < time_const+time_acc:
+        check_1 = 1
+        dis = 1/4*acc_max*math.pow(time_acc, 2) + 1/2*acc_max*time_acc*(time_instant-time_acc)
+        dis_list += [dis]
+        time_dislist += [time_instant]
+        time_instant = time_instant + time_interpolation
+    while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
+        check = 1
+        t2 = time_acc-(time_instant-(time_acc+time_const))
+        dis_dec = -(acc_max/2)*math.pow((time_acc/(2*math.pi)),2)*(1/2*math.pow((2*math.pi)/time_acc*t2, 2)-(1-math.cos((2*math.pi)/time_acc*t2)))
+        #dis_dec = 1/4*acc_max*math.pow(time_acc, 2)+1/2*acc_max*time_const*time_acc+acc_max/2*math.pow(time_acc/(math.pi*2),2)*(
+            #(math.pow(2*math.pi,2)*t2)/time_acc-1/2*math.pow((2*math.pi*math.pow(t2,2)/time_acc),2)+(1-math.cos(2*math.pi/time_acc*t2)))
+        dis_list_temp += [dis_dec]
+        time_dislist += [time_instant]
+        time_instant = time_instant + time_interpolation
+    dis_dec_max = dis_list_temp[0]
+    if check_1 == 0:
+        dis_plus = dis_acc
+    elif check_1 == 1:
+        dis_plus = dis - dis_dec_max
+    for i in range (len(dis_list_temp)):
+        dis_list.append(dis_list_temp[i]+dis_plus)
+    return dis_list, time_dislist
+
 """Объединяет полученные значения времени и скоростей/ускорений в одиные списки
 для построения графиков.
 На вход подается:
@@ -159,8 +199,3 @@ def Generation_hole_profile (acc_vel_list, time_list):
             for j in range (len(time_list[i])):
                 result_time.append(time_list[i][j])
     return result_time, result_acc_vel
-
-"""
-lists = Jerk (5, 5, 5, 5, 0.05)
-Graphs.Plotting_01(lists[1], lists[0], "", "", "", "")
-"""

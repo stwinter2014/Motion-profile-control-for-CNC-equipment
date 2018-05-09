@@ -20,7 +20,7 @@ feedrate = 10
 max_acceleration = 5
 max_deceleration = 5
 time_periods = []
-
+time_interpolation = 0.05
 """Данные о перемещении"""
 path_l = 0
 st_point = [8.956,0,26.437]
@@ -35,7 +35,7 @@ type_path = Path_length_calculator.path_type(path_code)
 """Подсчет длины пути"""
 if type_path == 1:
     print("Тип интерполяции - линейный.")
-    path_l = Path_length_calculator.path_linear (st_point, fn_point)
+    path_l = Path_length_calculator.Path_linear (st_point, fn_point)
     print("Длина пути: ", path_l)
 elif type_path == 2:
     print("Тип интерполяции - круговой. Задание окружности с помощью радиуса.")
@@ -47,7 +47,7 @@ elif type_path == 3:
     print("Длина пути: ", path_l)
 else:
     print("Тип пути не определен.")
-
+times = []
 """Проверка типа блока (обычный или короткий)"""
 type_block = Block_type.block_t_check(path_l, feedrate, max_acceleration, max_deceleration)
 if type_block[0] == 1:
@@ -56,9 +56,12 @@ if type_block[0] == 1:
     print("Время разгона: ", time_periods[0])
     print("Время постоянной скорости: ", time_periods[1])
     print("Время торможения: ", time_periods[2])
-    acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05)
-    Graphs.Plotting_1(acc_profile[1], acc_profile[0], "Время", "Ускорение", "Профиль ускорения", "Ускорение")
-    vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05, 0, feedrate)
-    Graphs.Plotting_1(vel_profile[1], vel_profile[0], "Время", "Скорость", "Профиль скорости", "Скорость")
-elif type_block[0] == 2:
-    print("Тип блока - короткий")
+    times.append(time_periods)
+    jerk_profile = Profile_generation.Jerk_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
+    Graphs.Plotting_1(jerk_profile[1], jerk_profile[0], "Время", "Толчок", "Профиль толчка", "Толчок", times)
+    acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
+    Graphs.Plotting_1(acc_profile[1], acc_profile[0], "Время", "Ускорение", "Профиль ускорения", "Ускорение", times)
+    vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0, feedrate)
+    Graphs.Plotting_1(vel_profile[1], vel_profile[0], "Время", "Скорость", "Профиль скорости", "Скорость", times)
+    dis_profile = Profile_generation.Displacement_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
+    Graphs.Plotting_1(dis_profile[1], dis_profile[0], "Время", "Скорость", "Профиль скорости", "Скорость", times)

@@ -42,7 +42,7 @@ def Trajectory_analisys(start_points, finish_points):
 На выход подается:
 1. График, содержащий запрограммированную и истинную траектории инструмента.
 """
-def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list):
+def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list, optimal_ratio_list, optimal_agree):
     x_points = []
     y_points = []
     spline = []
@@ -59,7 +59,10 @@ def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list):
     spline_x.append(start_points[0][0])
     spline_y.append(start_points[0][1])
     for i in range (len(start_points)-1):
-        spline = Spline.Spline_6(tolerance_list[i], ratio_list[i], start_points[i], finish_points[i], start_points[i+1], finish_points[i+1])
+        if optimal_agree[i] == 1:
+            spline = Spline.Spline_6(tolerance_list[i], optimal_ratio_list[i], start_points[i], finish_points[i], start_points[i+1], finish_points[i+1])
+        elif optimal_agree[i] == 0:
+            spline = Spline.Spline_6(tolerance_list[i], ratio_list[i], start_points[i], finish_points[i], start_points[i+1], finish_points[i+1])
         spline_x_out.append(spline[0])
         spline_y_out.append(spline[1])
         spline_z_out.append(spline[2])
