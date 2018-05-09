@@ -57,6 +57,7 @@ if type_block[0] == 1:
     print("Время постоянной скорости: ", time_periods[1])
     print("Время торможения: ", time_periods[2])
     times.append(time_periods)
+    print(times)
     jerk_profile = Profile_generation.Jerk_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
     Graphs.Plotting_1(jerk_profile[1], jerk_profile[0], "Время", "Толчок", "Профиль толчка", "Толчок", times)
     acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
@@ -64,4 +65,4 @@ if type_block[0] == 1:
     vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0, feedrate)
     Graphs.Plotting_1(vel_profile[1], vel_profile[0], "Время", "Скорость", "Профиль скорости", "Скорость", times)
     dis_profile = Profile_generation.Displacement_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
-    Graphs.Plotting_1(dis_profile[1], dis_profile[0], "Время", "Скорость", "Профиль скорости", "Скорость", times)
+    Graphs.Plotting_1(dis_profile[1], dis_profile[0], "Время", "Перемещение", "Профиль перемещения", "Перемещение", times)

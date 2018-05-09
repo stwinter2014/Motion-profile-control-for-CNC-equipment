@@ -20,7 +20,7 @@ def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per):
     plt.plot(x,y,label=label)
     currentAxis = plt.gca()
     for i in range (len(time_per)):
-        for j in range (len(time_per[i])-1):
+        for j in range (len(time_per[i])):
             time_sum += time_per[i][j]
         currentAxis.add_patch(mpl.patches.Rectangle((time_sum_hole, -10), time_sum, 100, alpha=alph, color='#D5D0CF'))
         time_sum_hole += time_sum

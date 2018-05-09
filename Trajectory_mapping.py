@@ -67,12 +67,12 @@ def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list, 
         spline_y_out.append(spline[1])
         spline_z_out.append(spline[2])
         Graphs.Plotting_02(spline[0], spline[1], spline[3], spline[4],
-                           "Ось x", "Ось y", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
+                           "Ось x, мм", "Ось y, мм", "Траектория инструмента в углу " + str(i+1), "Истинная траектория", "Запрограммированная траектория")
         for j in range (len(spline[0])):
             spline_x.append(spline[0][j])
             spline_y.append(spline[1][j])
     spline_x.append(finish_points[len(start_points)-1][0])
     spline_y.append(finish_points[len(finish_points)-1][1])
     Graphs.Plotting_02(spline_x, spline_y, x_points, y_points, 
-                       "Ось x", "Ось y", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
+                       "Ось x, мм", "Ось y, мм", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
     return spline_x_out, spline_y_out, spline_z_out

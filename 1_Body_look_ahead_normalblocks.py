@@ -89,7 +89,7 @@ for i in range (len(feedrate)):
     else:
         print(Work_with_files.Write_log("Блок " + str(i+1) + "."))
     feedr_n = i
-    time_periods = Block_type.Time_Generator_n_la(feedrate, feedr_n, path_l_list[i], max_acceleration, max_deceleration, vel_start)
+    time_periods = Block_type.Time_Generator_lookahead(feedrate, feedr_n, path_l_list[i], max_acceleration, max_deceleration, vel_start)
     print(time_periods)
     times.append(time_periods)
     print(Work_with_files.Write_log("Время разгона: " + str(time_periods[0]) + " с."))
