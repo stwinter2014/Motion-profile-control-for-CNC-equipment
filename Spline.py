@@ -58,6 +58,9 @@ def Spline_6(spline_tolerance, ratio, start_point_1, finish_point_1, start_point
     x_trajectory = []
     y_trajectory = []
     z_trajectory = []
+    x05 = 0
+    y05 = 0
+    z05 = 0
     d = spline_tolerance/(2*ratio+1)
     cd = d + ratio*d
     t = 0
@@ -80,12 +83,16 @@ def Spline_6(spline_tolerance, ratio, start_point_1, finish_point_1, start_point
         x = math.pow((1-t), 5)*point_1[0] + 5*t*math.pow((1-t), 4)*point_2[0] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[0] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[0] + 5*math.pow(t, 4)*(1-t)*point_5[0] + math.pow(t, 5)*point_6[0]
         y = math.pow((1-t), 5)*point_1[1] + 5*t*math.pow((1-t), 4)*point_2[1] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[1] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[1] + 5*math.pow(t, 4)*(1-t)*point_5[1] + math.pow(t, 5)*point_6[1]
         z = math.pow((1-t), 5)*point_1[2] + 5*t*math.pow((1-t), 4)*point_2[2] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[2] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[2] + 5*math.pow(t, 4)*(1-t)*point_5[2] + math.pow(t, 5)*point_6[2]
+        if t == 0.5:
+            x05 = x
+            y05 = y
+            z05 = z
         x_coord.append(x)
         y_coord.append(y)
         z_coord.append(z)
         t += 0.05
         t = round(t,2)
-    return x_coord, y_coord, z_coord, x_trajectory, y_trajectory, z_trajectory
+    return x_coord, y_coord, z_coord, x_trajectory, y_trajectory, z_trajectory, x05, y05, z05
 
 """
 Функция создания кривой Безье по трем точкам.

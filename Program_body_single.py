@@ -23,8 +23,9 @@ time_periods = []
 time_interpolation = 0.05
 """Данные о перемещении"""
 path_l = 0
-st_point = [8.956,0,26.437]
-fn_point = [79.616,0,90.494]
+st_point = [20, 10, 0]
+fn_point = [60, 40, 0]
+"Данные для круговой траектории инструмента"
 cn_point = [79.616,0,19.494]
 rad = 71
 way_move = 1
@@ -52,17 +53,19 @@ times = []
 type_block = Block_type.block_t_check(path_l, feedrate, max_acceleration, max_deceleration)
 if type_block[0] == 1:
     print("Тип блока - обычный")
-    time_periods = Block_type.Time_Generator_n(feedrate, path_l, max_acceleration, max_deceleration)
-    print("Время разгона: ", time_periods[0])
-    print("Время постоянной скорости: ", time_periods[1])
-    print("Время торможения: ", time_periods[2])
-    times.append(time_periods)
-    print(times)
-    jerk_profile = Profile_generation.Jerk_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
-    Graphs.Plotting_1(jerk_profile[1], jerk_profile[0], "Время", "Толчок", "Профиль толчка", "Толчок", times)
-    acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
-    Graphs.Plotting_1(acc_profile[1], acc_profile[0], "Время", "Ускорение", "Профиль ускорения", "Ускорение", times)
-    vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0, feedrate)
-    Graphs.Plotting_1(vel_profile[1], vel_profile[0], "Время", "Скорость", "Профиль скорости", "Скорость", times)
-    dis_profile = Profile_generation.Displacement_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
-    Graphs.Plotting_1(dis_profile[1], dis_profile[0], "Время", "Перемещение", "Профиль перемещения", "Перемещение", times)
+else:
+    print("Тип блока - короткий")
+time_periods = Block_type.Time_Generator_n(feedrate, path_l, max_acceleration, max_deceleration)
+print("Время разгона: ", time_periods[0])
+print("Время постоянной скорости: ", time_periods[1])
+print("Время торможения: ", time_periods[2])
+times.append(time_periods)
+jerk_profile = Profile_generation.Jerk_profile(max_acceleration, max_deceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
+Graphs.Plotting_1(jerk_profile[1], jerk_profile[0], "Время, с", "Толчок, мм/с3", "Профиль толчка", "Толчок", times)
+acc_profile = Profile_generation.Acceleration_profile(max_acceleration, max_deceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
+Graphs.Plotting_1(acc_profile[1], acc_profile[0], "Время, с", "Ускорение, мм/с2", "Профиль ускорения", "Ускорение", times)
+vel_profile = Profile_generation.Velocity_profile(max_acceleration, max_deceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0, feedrate)
+Graphs.Plotting_1(vel_profile[1], vel_profile[0], "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость", times)
+print("Максимальная достигнутая скорость на блоке: " + str(vel_profile[3]) + " мм/с.")
+dis_profile = Profile_generation.Displacement_profile(max_acceleration, max_deceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, 0)
+Graphs.Plotting_1(dis_profile[1], dis_profile[0], "Время, с", "Перемещение, мм", "Профиль перемещения", "Перемещение", times)

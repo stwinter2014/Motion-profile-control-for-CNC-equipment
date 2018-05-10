@@ -2,8 +2,9 @@ from numpy import pi, cos, sin
 import math
 import Graphs
 
-def Jerk_profile (acc_max, time_acc, time_const, time_dec, time_instant, jerk_st):
-    time_interpolation = time_instant
+def Jerk_profile (acc_max, dec_max, time_acc, time_const, time_dec, time_inst, jerk_st):
+    time_interpolation = time_inst
+    time_instant = 0
     jerk_list = []
     time_jerklist = []
     jerk_acc = jerk_st
@@ -14,18 +15,18 @@ def Jerk_profile (acc_max, time_acc, time_const, time_dec, time_instant, jerk_st
         jerk_acc = (acc_max*pi)/time_acc*sin((2*pi)/time_acc*time_instant)
         jerk_list += [jerk_acc]
         time_jerklist += [time_instant]
-        time_instant = time_instant + 0.1
+        time_instant = time_instant + time_interpolation
     while time_instant >= time_acc and time_instant < time_const+time_acc:
         jerk_const = 0
         jerk_list += [jerk_const]
         time_jerklist += [time_instant]
-        time_instant = time_instant + 0.1
+        time_instant = time_instant + time_interpolation
     while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
         check = 1
-        jerk_dec = -(acc_max*pi)/time_acc*sin((2*pi)/time_acc*(time_instant-(time_acc+time_const)))
+        jerk_dec = -(dec_max*pi)/time_acc*sin((2*pi)/time_acc*(time_instant-(time_acc+time_const)))
         jerk_list += [jerk_dec]
         time_jerklist += [time_instant]
-        time_instant = time_instant + 0.1
+        time_instant = time_instant + time_interpolation
     if jerk_dec == 0 and check == 0:
         jerk_out = jerk_acc
     elif jerk_dec == 0 and check == 1:
@@ -47,7 +48,7 @@ def Jerk_profile (acc_max, time_acc, time_const, time_dec, time_instant, jerk_st
 2. Список временных промежутков, с.
 3. Конечное ускорение на блоке, мм/с^2.
 """
-def Acceleration_profile (acc_max, time_acc, time_const, time_dec, time_instant, acc_st):
+def Acceleration_profile (acc_max, dec_max, time_acc, time_const, time_dec, time_instant, acc_st):
     time_interpolation = time_instant
     acc_list = []
     time_acclist = []
@@ -67,7 +68,7 @@ def Acceleration_profile (acc_max, time_acc, time_const, time_dec, time_instant,
         time_instant = time_instant + time_interpolation
     while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
         check = 1
-        dec = -acc_max/2*(1-math.cos((2*pi)/time_dec*(time_instant-(time_acc+time_const))))
+        dec = -dec_max/2*(1-math.cos((2*pi)/time_dec*(time_instant-(time_acc+time_const))))
         acc_list += [dec]
         time_acclist += [time_instant]
         time_instant = time_instant + time_interpolation
@@ -94,7 +95,7 @@ def Acceleration_profile (acc_max, time_acc, time_const, time_dec, time_instant,
 3. Конечная скорость в блоке, мм/с.
 4. Максимальная достигнутая скорость инструмента, мм/с.
 """
-def Velocity_profile (acc_max, time_acc, time_const, time_dec, time_instant, vel_st, feedrate):
+def Velocity_profile (acc_max, dec_max, time_acc, time_const, time_dec, time_instant, vel_st, feedrate):
     time_interpolation = time_instant
     vel_list = []
     time_vellist = []
@@ -123,7 +124,7 @@ def Velocity_profile (acc_max, time_acc, time_const, time_dec, time_instant, vel
     while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
         check = 1
         time_2 = time_acc+time_const
-        vel_dec = acc_max/2*(-(time_instant-time_2)-(time_dec/(2*pi))*sin((2*pi)/time_dec*(-(time_instant-time_2))))+vel_max
+        vel_dec = dec_max/2*(-(time_instant-time_2)-(time_dec/(2*pi))*sin((2*pi)/time_dec*(-(time_instant-time_2))))+vel_max
         vel_list += [vel_dec]
         time_vellist += [time_instant]
         time_instant = time_instant + time_interpolation
@@ -135,7 +136,7 @@ def Velocity_profile (acc_max, time_acc, time_const, time_dec, time_instant, vel
         vel_out = vel_dec
     return vel_list, time_vellist, vel_out, vel_max
 
-def Displacement_profile (acc_max, time_acc, time_const, time_dec, time_inst, dis_start):
+def Displacement_profile (acc_max, dec_max, time_acc, time_const, time_dec, time_inst, dis_start):
     dis_list = []
     dis_list_temp = []
     time_dislist = []
@@ -160,7 +161,7 @@ def Displacement_profile (acc_max, time_acc, time_const, time_dec, time_inst, di
     while time_instant >= time_acc+time_const and time_instant <= time_acc+time_const+time_dec:
         check = 1
         t2 = time_acc-(time_instant-(time_acc+time_const))
-        dis_dec = -(acc_max/2)*math.pow((time_acc/(2*math.pi)),2)*(1/2*math.pow((2*math.pi)/time_acc*t2, 2)-(1-math.cos((2*math.pi)/time_acc*t2)))
+        dis_dec = -(dec_max/2)*math.pow((time_acc/(2*math.pi)),2)*(1/2*math.pow((2*math.pi)/time_acc*t2, 2)-(1-math.cos((2*math.pi)/time_acc*t2)))
         #dis_dec = 1/4*acc_max*math.pow(time_acc, 2)+1/2*acc_max*time_const*time_acc+acc_max/2*math.pow(time_acc/(math.pi*2),2)*(
             #(math.pow(2*math.pi,2)*t2)/time_acc-1/2*math.pow((2*math.pi*math.pow(t2,2)/time_acc),2)+(1-math.cos(2*math.pi/time_acc*t2)))
         dis_list_temp += [dis_dec]

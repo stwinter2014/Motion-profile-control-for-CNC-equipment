@@ -20,7 +20,7 @@ feedrate = [10, 8, 12]
 max_acceleration = 5
 max_deceleration = 5
 time_periods = []
-
+time_interpolation = 0.05
 """Данные о перемещении"""
 path_l = 0
 st_point = [8.956,0,26.437]
@@ -32,7 +32,9 @@ way_move = 1
 """Определение типа пути (линейный или круговой, тип задания окружности)"""
 path_l_list = []
 time_list = []
+time_j_list = []
 time_x_list = []
+jerk_list = []
 acc_list = []
 vel_list = []
 for i in range (0,3):
@@ -68,7 +70,19 @@ for i in range (0,3):
         print("Время разгона: ", time_list[i][0])
         print("Время постоянной скорости: ", time_list[i][1])
         print("Время торможения: ", time_list[i][2])
-        acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_list[i][0], time_list[i][1], time_list[i][2], 0.05, 0)
+        jerk_profile = Profile_generation.Jerk_profile(max_acceleration, max_deceleration, time_list[i][0], time_list[i][1], time_list[i][2], time_interpolation, 0)
+        for j in range (0, len(jerk_profile[0])):
+            jerk_list.append(jerk_profile[0][j])
+        if i > 0:
+            temp = time_j_list[len(time_j_list)-1]
+            for j in range (0, len(jerk_profile[1])):
+                jerk_profile[1][j] = jerk_profile[1][j]+ temp
+                time_j_list.append(jerk_profile[1][j])
+        else:
+            for j in range (0,len(jerk_profile[1])):
+                time_j_list.append(jerk_profile[1][j])
+        jerk_profile = []
+        acc_profile = Profile_generation.Acceleration_profile(max_acceleration, max_deceleration, time_list[i][0], time_list[i][1], time_list[i][2], time_interpolation, 0)
         for j in range (0, len(acc_profile[0])):
             acc_list.append(acc_profile[0][j])
         if i > 0:
@@ -80,7 +94,7 @@ for i in range (0,3):
             for j in range (0,len(acc_profile[1])):
                 time_x_list.append(acc_profile[1][j])
         acc_profile = []
-        vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_list[i][0], time_list[i][1], time_list[i][2], 0.05, 0, feedrate[i])
+        vel_profile = Profile_generation.Velocity_profile(max_acceleration, max_deceleration, time_list[i][0], time_list[i][1], time_list[i][2], 0.05, 0, feedrate[i])
         for j in range (0, len(vel_profile[0])):
             vel_list.append(vel_profile[0][j])
         vel_profile = []
@@ -88,5 +102,6 @@ for i in range (0,3):
         print("Тип блока - короткий")
     print("Обработка блока ", i+1, " закончена.")
     print("______________________________________")
+Graphs.Plotting_1(time_j_list, jerk_list, "Время, с", "Толчок, мм/с3", "Профиль толчка", "Толчок", time_list)
 Graphs.Plotting_1(time_x_list, acc_list, "Время, с", "Ускорение, мм/с2", "Профиль ускорения", "Ускорение", time_list)
 Graphs.Plotting_1(time_x_list, vel_list, "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость", time_list)

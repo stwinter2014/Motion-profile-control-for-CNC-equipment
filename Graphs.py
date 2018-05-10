@@ -55,6 +55,17 @@ def Plotting_02(x1, y1, x2, y2, name_x, name_y, name_graph, label1, label2):
     plt.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
     plt.show()
 
+def Plotting_03(x1, y1, x2, y2, x3, y3, name_x, name_y, name_graph, label1, label2, label3):
+    plt.plot(x1, y1, label = label1)
+    plt.plot(x2, y2, label = label2, alpha=0.4)
+    plt.plot(x3, y3, label = label3)
+    plt.xlabel(name_x)
+    plt.ylabel(name_y)
+    plt.title(name_graph)
+    plt.legend()
+    plt.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
+    plt.show()
+
 def Plotting_2 (x, y, x2, y2, name_x, name_y1, name_y2, name_graph1, name_graph2):
     fig = plt.figure()
     fig1 = fig.add_subplot(211)

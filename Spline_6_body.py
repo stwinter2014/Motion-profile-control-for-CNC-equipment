@@ -25,13 +25,39 @@ y_p.append(finish_p_2[1])
 feedrate = [5, 10]
 "Степень точности обхода угла"
 Lt = 3
-n = 0.8
+n = 0.3
+d = Lt/(2*n+1)
+c = n*d
+e = (7*n+16)/32*d
+print("с = " + str(c))
+print("d = " + str(d))
+print("e = " + str(e))
 "Построение графиков со сплайном и теоретической траекторией"
 Axes_spline = Spline.Spline_6(Lt, n, start_p_1, finish_p_1, start_p_2, finish_p_2)
+cord = []
+cord_x = []
+cord_y = []
+cord.append(Axes_spline[6])
+cord.append(Axes_spline[7])
+cord.append(Axes_spline[8])
+epsilon = Path_length_calculator.Path_linear(cord, finish_p_1)
+cord_x.append(Axes_spline[6])
+cord_x.append(finish_p_1[0])
+cord_y.append(Axes_spline[7])
+cord_y.append(finish_p_1[1])
+print("e = " + str(epsilon))
 Graphs.Plotting_02(Axes_spline[0], Axes_spline[1], x_p, y_p,
                    "Ось x", "Ось y", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
 Graphs.Plotting_02(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
                    "Ось x", "Ось y", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
+Graphs.Plotting_03(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4], cord_x, cord_y,
+                   "Ось x", "Ось y", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория", "da")
+
+
+
+
+
+
 """l_1 = Path_length_calculator.Path_linear(start_p_1, finish_p_1)
 l_2 = Path_length_calculator.Path_linear(start_p_2, finish_p_2)
 print(l_1, l_2)

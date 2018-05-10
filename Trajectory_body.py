@@ -123,12 +123,12 @@ for i in range (len(feedrate_list)):
     print(Work_with_files.Write_log("Время постоянной скорости: " + str(round(time_periods[1], 3)) + " с."))
     print(Work_with_files.Write_log("Время торможения: " + str(round(time_periods[2], 3)) + " с."))
     "Профиль ускорения"
-    acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, acc_start)
+    acc_profile = Profile_generation.Acceleration_profile(max_acceleration, max_deceleration, time_periods[0], time_periods[1], time_periods[2], time_interpolation, acc_start)
     acc_start = acc_profile[2]
     hole_temp_time_1.append(acc_profile[1])
     hole_temp_acc.append(acc_profile[0])
     "Профиль скорости"
-    vel_profile = Profile_generation.Velocity_profile(max_acceleration, time_periods[0], time_periods[1],
+    vel_profile = Profile_generation.Velocity_profile(max_acceleration, max_deceleration, time_periods[0], time_periods[1],
                                                       time_periods[2], time_interpolation, vel_start, feedrate_list[i])
     vel_start = vel_profile[2]
     if i%2 == 0:
