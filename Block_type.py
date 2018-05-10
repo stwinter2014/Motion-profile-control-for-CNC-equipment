@@ -157,6 +157,7 @@ def Time_Generator_lookahead(feedrate, number, length, max_acc, max_dec, vel_las
 3. Время торможения."""
 def Time_Generator_la_withangles(feedrate, number, length, max_acc, max_dec, vel_last):
     if number == 0 and number < len(feedrate)-1:
+        print(length)
         if feedrate[number] <= feedrate[number+1]:
             time_acc = 2*feedrate[number]/max_acc
             time_dec = 0
@@ -172,21 +173,21 @@ def Time_Generator_la_withangles(feedrate, number, length, max_acc, max_dec, vel
                 print(Work_with_files.Write_log("Тип блока - обычный."))
                 time_const = (length-len_ad)/feedrate[number]
         elif feedrate[number] > feedrate[number+1]:
-            len_ad_t = 0
             time_acc = 2*feedrate[number]/max_acc
             time_dec = 2*feedrate[number]/max_dec - 2*feedrate[number+1]/max_acc
             len_ad = 1/4*max_acc*math.pow(time_acc, 2) + 1/4*max_acc*math.pow(time_dec, 2)
+            print(len_ad)
+            len_ad_t = len_ad
             if len_ad > length:
                 print(Work_with_files.Write_log("Тип блока - короткий."))
-                time_acc = 2*feedrate[number+1]/max_acc
-                time_dec = 0
-                len_ad_t = 1/4*max_acc*time_acc
-                if len_ad_t < length:
-                    time_const = (length-len_ad_t)/feedrate[number+1]
-                elif len_ad_t == length:
-                    time_const = 0
-                else:
-                    time_acc = math.sqrt(length*4/max_acc)
+                time_const = 0
+                feed = feedrate[number]
+                while len_ad_t > length:
+                    feed = feed-0.001
+                    time_acc = 2*feed/max_acc
+                    time_dec = 2*feed/max_dec - 2*feedrate[number+1]/max_acc
+                    len_ad_t = 1/4*max_acc*math.pow(time_acc, 2) + 1/4*max_acc*math.pow(time_dec, 2)
+                print(len_ad_t)
             elif len_ad == length:
                 print(Work_with_files.Write_log("Тип блока - короткий."))
                 time_const = 0
@@ -198,10 +199,7 @@ def Time_Generator_la_withangles(feedrate, number, length, max_acc, max_dec, vel
             time_acc = 0
             time_dec = 2*feedrate[number]/max_dec
             len_ad = 1/4*max_acc*time_acc + 1/4*max_acc*time_dec
-            if len_ad > length:
-                time_const = 0
-                pass
-            elif len_ad == length:
+            if len_ad == length:
                 print(Work_with_files.Write_log("Тип блока - короткий."))
                 time_const = 0
             else:
@@ -211,9 +209,18 @@ def Time_Generator_la_withangles(feedrate, number, length, max_acc, max_dec, vel
             time_acc = 2*feedrate[number]/max_acc - 2*feedrate[number-1]/max_dec
             time_dec = 2*feedrate[number]/max_dec
             len_ad = 1/4*max_acc*time_acc + 1/4*max_acc*time_dec
+            len_ad_t = len_ad
+            print(len_ad_t)
             if len_ad > length:
                 time_const = 0
-                pass
+                print(Work_with_files.Write_log("Тип блока - короткий, ага."))
+                feed = feedrate[number]
+                print(length)
+                while len_ad_t > length:
+                    feed = feed-0.1
+                    time_acc = 2*feed/max_acc - 2*feedrate[number-1]/max_dec
+                    time_dec = 2*feed/max_dec
+                    len_ad_t = 1/4*max_acc*math.pow(time_acc, 2) + 1/4*max_acc*math.pow(time_dec, 2)
             elif len_ad == length:
                 print(Work_with_files.Write_log("Тип блока - короткий."))
                 time_const = 0
