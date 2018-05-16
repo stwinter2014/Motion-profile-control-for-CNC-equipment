@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import pylab
 from numpy import pi, cos, sin
 import math
 
@@ -22,7 +23,7 @@ def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per):
     for i in range (len(time_per)):
         for j in range (len(time_per[i])):
             time_sum += time_per[i][j]
-        currentAxis.add_patch(mpl.patches.Rectangle((time_sum_hole, -10), time_sum, 100, alpha=alph, color='#D5D0CF'))
+        currentAxis.add_patch(mpl.patches.Rectangle((time_sum_hole, -100), time_sum, 1000, alpha=alph, color='#D5D0CF'))
         time_sum_hole += time_sum
         time_sum = 0
         if i%2 == 0:
@@ -79,4 +80,25 @@ def Plotting_2 (x, y, x2, y2, name_x, name_y1, name_y2, name_graph1, name_graph2
     plt.xlabel(name_x)
     fig1.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
     fig2.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
+    plt.legend()
+    plt.show()
+
+def Plotting_22 (x, y, x2, y2, x3, y3, x4, y4, name_x, name_y, name_graph1, name_graph2, label1, label2):
+    fig = plt.figure()
+    fig1 = fig.add_subplot(121)
+    fig2 = fig.add_subplot(122)
+    fig1.set_title(name_graph1)
+    fig1.plot(x, y, label=label1)
+    fig1.plot(x2, y2, label=label2, alpha = 0.4)
+    fig2.set_title(name_graph2)
+    fig2.plot(x3, y3, label = label1)
+    fig2.plot(x4, y4, label = label2, alpha = 0.4)
+    fig1.set_ylabel(name_y)
+    fig2.set_ylabel(name_y)
+    fig1.set_xlabel(name_x)
+    fig2.set_xlabel(name_x)
+    fig1.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
+    fig2.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
+    fig1.legend()
+    fig2.legend()
     plt.show()
