@@ -66,13 +66,32 @@ def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list, 
         spline_x_out.append(spline[0])
         spline_y_out.append(spline[1])
         spline_z_out.append(spline[2])
+        epsilon_x = []
+        epsilon_x.append(spline[6])
+        epsilon_x.append(start_points[i+1][0])
+        epsilon_y = []
+        epsilon_y.append(spline[7])
+        epsilon_y.append(start_points[i+1][1])
+        epsilon = Path_length_calculator.Path_linear([epsilon_x[0], epsilon_y[0]], [epsilon_x[1], epsilon_y[1]])
+        print("Ошибка обработки: " + str(epsilon))
+        """Русский язык"""
+        #Graphs.Plotting_02(spline[0], spline[1], spline[3], spline[4],
+                           #"Ось x, мм", "Ось y, мм", "Траектория инструмента в угле " + str(i+1), "Истинная траектория", "Запрограммированная траектория")
+        """English language"""
         Graphs.Plotting_02(spline[0], spline[1], spline[3], spline[4],
-                           "Ось x, мм", "Ось y, мм", "Траектория инструмента в углу " + str(i+1), "Истинная траектория", "Запрограммированная траектория")
+                           "X, mm", "Y, mm", "Instrument trajectory at corner " + str(i+1), "Final trajectory", "Programmed trajectory")
+        #Graphs.Plotting_03_help(spline[0], spline[1], spline[3], spline[4], epsilon_x, epsilon_y,
+                           #"Ось x, мм", "Ось y, мм", "Траектория инструмента в угле " + str(i+1), "Истинная траектория", "Запрограммированная траектория")
         for j in range (len(spline[0])):
             spline_x.append(spline[0][j])
             spline_y.append(spline[1][j])
     spline_x.append(finish_points[len(start_points)-1][0])
     spline_y.append(finish_points[len(finish_points)-1][1])
-    Graphs.Plotting_02(spline_x, spline_y, x_points, y_points, 
+    """Русский язык"""
+    Graphs.Plotting_02_colors(spline_x, spline_y, x_points, y_points, 
                        "Ось x, мм", "Ось y, мм", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
+    """English language"""
+    Graphs.Plotting_02_colors(spline_x, spline_y, x_points, y_points, 
+                       "X, mm", "Y, mm", "Instrument trajectory", "Final trajectory", "Programmed trajectory")
+
     return spline_x_out, spline_y_out, spline_z_out, spline[6], spline[7], spline[8]

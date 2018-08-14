@@ -23,7 +23,7 @@ feedrate_input = [30, 30, 18, 25]
 max_acceleration = 15
 max_deceleration = 15
 "Степень точности обработки углов"
-tolerance_angle = [2, 1, 3]
+tolerance_angle = [4, 3, 3]
 ratio = [0.9, 0.8, 0.4]
 optimal_ratio = []
 optimal_agree_list = [0, 0, 1]
@@ -145,12 +145,17 @@ for i in range (len(feedrate_list)):
 
 "Построение графиков профиля скорости/ускорения"
 hole_profile_1 = Profile_generation.Generation_hole_profile(hole_temp_vel, hole_temp_time)
-Graphs.Plotting_1(hole_profile_1[0], hole_profile_1[1], "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость инструмента", times)
+"""Русский язык"""
+#Graphs.Plotting_1(hole_profile_1[0], hole_profile_1[1], "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость инструмента", times)
+"""English language"""
+Graphs.Plotting_1(hole_profile_1[0], hole_profile_1[1], "Time, sec", "Velocity, mm/sec", "Velocity profile", "Velocity", times)
+
 hole_profile_2 = Profile_generation.Generation_hole_profile(hole_temp_acc, hole_temp_time_1)
 #Graphs.Plotting_1(hole_profile_2[0], hole_profile_2[1], "Время, с", "Ускорение, мм/с2", "Профиль ускорения", "Ускорение инструмента", times)
 #hole_profile_3 = Profile_generation.Generation_hole_profile(hole_temp_jerk, hole_temp_time_2)
 #Graphs.Plotting_1(hole_profile_3[0], hole_profile_3[1], "Время", "Ускорение", "Профиль ускорения", "Ускорение", times)
 
-Graphs.Plotting_2(hole_profile_1[0], hole_profile_1[1], hole_profile_2[0], hole_profile_2[1],
-                  "Время, с", "Скорость, мм/с", "Ускорение, мм/с^2", "Профиль скорости", "Профиль ускорения")
+"""Скорость + ускорение"""
+#Graphs.Plotting_2(hole_profile_1[0], hole_profile_1[1], hole_profile_2[0], hole_profile_2[1],
+                  #"Время, с", "Скорость, мм/с", "Ускорение, мм/с^2", "Профиль скорости", "Профиль ускорения")
 

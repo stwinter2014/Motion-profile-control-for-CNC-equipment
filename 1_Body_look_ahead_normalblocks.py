@@ -18,9 +18,9 @@ import math
 path_code = ["010", "010", "010"]
 
 """Данные об обработке"""
-feedrate = [25]
-max_acceleration = 25
-max_deceleration = 25
+feedrate = [25, 20, 30]
+max_acceleration = [25, 25, 20]
+max_deceleration = [15, 25, 25]
 time_periods = []
 
 """Данные о перемещении"""
@@ -75,12 +75,8 @@ for i in range (len(path_code)):
     else:
         print(Work_with_files.Write_log("Тип пути не определен."))
 
-path_l_list = [30]
-print(Work_with_files.Write_log("Длина пути: " + str(round(path_l_list[0], 3)) + " мм."))
-
 "Генерация профиля ускорения и скорости."
 print(Work_with_files.Write_log("Генерирование профиля скорости."))
-print(Work_with_files.Write_log("Длина пути: " + str(round(path_l_list[0], 3)) + " мм."))
 times = []
 for i in range (len(feedrate)):
     if  i == 0 and feedr_n == len(feedrate)-1:
@@ -91,7 +87,15 @@ for i in range (len(feedrate)):
     else:
         print(Work_with_files.Write_log("Блок " + str(i+1) + "."))
     feedr_n = i
-    time_periods = Block_type.Time_Generator_lookahead(feedrate, feedr_n, path_l_list[i], max_acceleration, max_deceleration, vel_start)
+    if i == 0:
+        time_periods = Block_type.Time_Generator_lookahead_1(feedrate, feedr_n, path_l_list[i], max_acceleration[i], max_deceleration[i], vel_start,
+                                                             max_acceleration[i], max_deceleration[i], max_acceleration[i+1], max_deceleration[i+1])
+    elif i == 1:
+        time_periods = Block_type.Time_Generator_lookahead_1(feedrate, feedr_n, path_l_list[i], max_acceleration[i], max_deceleration[i], vel_start,
+                                                             max_acceleration[i-1], max_deceleration[i-1], max_acceleration[i+1], max_deceleration[i+1])
+    elif i == 2:
+        time_periods = Block_type.Time_Generator_lookahead_1(feedrate, feedr_n, path_l_list[i], max_acceleration[i], max_deceleration[i], vel_start,
+                                                             max_acceleration[i-1], max_deceleration[i-1], max_acceleration[i], max_deceleration[i])
     times.append(time_periods)
     print(Work_with_files.Write_log("Время разгона: " + str(round(time_periods[0], 3)) + " с."))
     print(Work_with_files.Write_log("Время постоянной скорости: " + str(round(time_periods[1], 3)) + " с."))
@@ -99,7 +103,7 @@ for i in range (len(feedrate)):
     #acc_profile = Profile_generation.Acceleration_profile(max_acceleration, time_periods[0], time_periods[1], time_periods[2], 0.05)
     #hole_temp_time_1.append(acc_profile[1])
     #hole_temp_acc.append(acc_profile[0])
-    vel_profile = Profile_generation.Velocity_profile(max_acceleration, max_deceleration, time_periods[0], time_periods[1], time_periods[2], 0.05, vel_start, feedrate[i])
+    vel_profile = Profile_generation.Velocity_profile(max_acceleration[i], max_deceleration[i], time_periods[0], time_periods[1], time_periods[2], 0.05, vel_start, feedrate[i])
     vel_start = vel_profile[2]
     print(Work_with_files.Write_log("Максимальная скорость на блоке: " + str(vel_profile[3]) + " мм/с."))
     hole_temp_time.append(vel_profile[1])
@@ -107,6 +111,11 @@ for i in range (len(feedrate)):
     print("Обработка блока ", i+1, " закончена.")
     print("______________________________________")
 hole_profile = Profile_generation.Generation_hole_profile(hole_temp_vel, hole_temp_time)
-Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость", times)
+
+"""Вывод результатов"""
+"""Русский язык"""
+#Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость", times)
+"""English language"""
+Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Time, sec", "Velocity, mm/sec", "Velocity profile", "Velocity", times)
 #hole_profile = Profile_generation.Generation_hole_profile(hole_temp_acc, hole_temp_time_1)
 #Graphs.Plotting_1(hole_profile[0], hole_profile[1], "Время", "Ускорение", "Профиль ускорения", "Ускорение")

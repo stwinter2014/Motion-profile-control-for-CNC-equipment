@@ -63,7 +63,7 @@ def Spline_6(spline_tolerance, ratio, start_point_1, finish_point_1, start_point
     z05 = 0
     d = spline_tolerance/(2*ratio+1)
     cd = d + ratio*d
-    t = 0
+    t = 0.4
     point_1 = Point_find(start_point_1, finish_point_1, spline_tolerance, 0)
     point_6 = Point_find(start_point_2, finish_point_2, spline_tolerance, 1)
     point_2 = Point_find(start_point_1, finish_point_1, cd, 0)
@@ -79,7 +79,7 @@ def Spline_6(spline_tolerance, ratio, start_point_1, finish_point_1, start_point
     z_trajectory.append(point_1[2])
     z_trajectory.append(finish_point_1[2])
     z_trajectory.append(point_6[2])
-    while t >= 0 and t <= 1:
+    while t >= 0.4 and t <= 0.6:
         x = math.pow((1-t), 5)*point_1[0] + 5*t*math.pow((1-t), 4)*point_2[0] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[0] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[0] + 5*math.pow(t, 4)*(1-t)*point_5[0] + math.pow(t, 5)*point_6[0]
         y = math.pow((1-t), 5)*point_1[1] + 5*t*math.pow((1-t), 4)*point_2[1] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[1] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[1] + 5*math.pow(t, 4)*(1-t)*point_5[1] + math.pow(t, 5)*point_6[1]
         z = math.pow((1-t), 5)*point_1[2] + 5*t*math.pow((1-t), 4)*point_2[2] + 10*math.pow(t,2)*math.pow((1-t), 3)*point_3[2] + 10*math.pow(t, 3)*math.pow((1-t), 2)*point_4[2] + 5*math.pow(t, 4)*(1-t)*point_5[2] + math.pow(t, 5)*point_6[2]

@@ -29,26 +29,28 @@ Lt = 2
 n = 0.3
 d = Lt/(2*n+1)
 c = n*d
-e = (7*n+16)/32*d
-"""
+e = ((7*n+16))/32*d
 print("с = " + str(c))
 print("d = " + str(d))
 print("e = " + str(e))
-"""
+
 "Построение графиков со сплайном и теоретической траекторией"
 Axes_spline = Spline.Spline_6(Lt, n, start_p_1, finish_p_1, start_p_2, finish_p_2)
-cord = []
 cord_x = []
 cord_y = []
-cord.append(Axes_spline[6])
-cord.append(Axes_spline[7])
-cord.append(Axes_spline[8])
-epsilon = Path_length_calculator.Path_linear(cord, finish_p_1)
+#Расчет ошибки обработки напрямую.
+cord_05 = []
+cord_05.append(Axes_spline[6])
+cord_05.append(Axes_spline[7])
+cord_05.append(Axes_spline[8])
+epsilon = Path_length_calculator.Path_linear(cord_05, finish_p_1)
+LEN = len(Axes_spline[0])
+print('LEN = ', LEN)
 cord_x.append(Axes_spline[6])
 cord_x.append(finish_p_1[0])
 cord_y.append(Axes_spline[7])
 cord_y.append(finish_p_1[1])
-#print("e = " + str(epsilon))
+print("e = " + str(epsilon))
 spline_x = []
 spline_y = []
 spline_x.append(start_p_1[0])
@@ -59,20 +61,23 @@ spline_y.append(start_p_1[1])
 for i in range (len(Axes_spline[1])):
     spline_y.append(Axes_spline[1][i])
 spline_y.append(finish_p_2[1])
-Graphs.Plotting_02(spline_x, spline_y, x_p, y_p,
-                   "Ось x", "Ось y", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
 
+Graphs.Plotting_02(spline_x, spline_y, x_p, y_p,
+                   "Ось x, мм", "Ось y, мм", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
+"""Русский язык"""
+#Graphs.Plotting_02(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
+                   #"Ось x, мм", "Ось y, мм", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
+
+"""English language"""
 Graphs.Plotting_02(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
-                   "Ось x", "Ось y", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
+                   "X, mm", "Y, mm", "Bezier Curve", "Final trajectory", "Programmed trajectory")
+
 
 #Graphs.Plotting_03(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4], cord_x, cord_y,
                    #"Ось x", "Ось y", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория", "da")
-
-
-Graphs.Plotting_22(spline_x, spline_y, x_p, y_p, Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
-                   "Ось x", "Ось y", "Траектория инструмента с кривой Безье", "Кривая Безье", "истинная траектория",
-                   "запрограммированная траектория")
-
+#Graphs.Plotting_22(spline_x, spline_y, x_p, y_p, Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
+                   #"Ось x, мм", "Ось y, мм", "Траектория инструмента с кривой Безье", "Кривая Безье", "Истинная траектория",
+                   #"Запрограммированная траектория")
 
 
 l_1 = Path_length_calculator.Path_linear(start_p_1, finish_p_1)

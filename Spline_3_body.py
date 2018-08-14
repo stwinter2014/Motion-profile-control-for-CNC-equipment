@@ -11,7 +11,7 @@ finish_p_1 = [42.361, 30, 0]
 start_p_2 = [42.361, 30, 0]
 finish_p_2 = [64.721, 10, 0]
 "Степень точности обхода угла"
-tolerance = 2
+tolerance = 5
 "Построение сплайна"
 Axes_spline_list = Spline.Spline_3(start_p_1, finish_p_1, start_p_2, finish_p_2, tolerance)
 "Построение графиков со сплайном и теоретической траекторией"
@@ -28,8 +28,13 @@ z_hole.append(start_p_1[2])
 z_hole.append(finish_p_1[2])
 z_hole.append(finish_p_2[2])
 
+"""Русский язык"""
 Graphs.Plotting_02(Axes_spline_list[0], Axes_spline_list[1], Axes_spline_list[3], Axes_spline_list[4],
-                   "x", "y", "Bézier curve", "Spline", "Theoretic trajectory")
+                   "Ось x, мм", "Ось y, мм", "c) Bezier curve shape", "Реальная траектория", "Запрограммированная траектория")
+"""English language"""
+Graphs.Plotting_02(Axes_spline_list[0], Axes_spline_list[1], Axes_spline_list[3], Axes_spline_list[4],
+                   "X, mm", "Y, mm", "Bezier curve", "Final trajectory", "Programmed trajectory")
+
 result_spline_x = []
 result_spline_x.append(start_p_1[0])
 for i in range (len(Axes_spline_list[0])):
@@ -42,8 +47,13 @@ for i in range (len(Axes_spline_list[1])):
     result_spline_y.append(Axes_spline_list[1][i])
 result_spline_y.append(finish_p_2[1])
 
+"""Русский язык"""
+#Graphs.Plotting_02(result_spline_x, result_spline_y, x_hole, y_hole,
+#                   "Ось x, мм", "Ось y, мм", "Кривая Безье", "Реальная траектория", "Запрограммированная траектория")
+"""English language"""
 Graphs.Plotting_02(result_spline_x, result_spline_y, x_hole, y_hole,
-                   "x", "y", "Bézier curve", "Spline", "Theoretic trajectory")
+                   "X, mm", "Y, mm", "Bezier curve", "Final trajectory", "Programmed trajectory")
+
 "Получение длины пути по траектории сплайна"
 length_spline = Spline.Spline_length(Axes_spline_list[0], Axes_spline_list[1], Axes_spline_list[2])
 print("Длина пути на сплайне: " + str(round(length_spline, 3)) + " мм.")

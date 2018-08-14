@@ -16,7 +16,8 @@ import math
 path_code = ["010", "010", "010"]
 
 """Данные об обработке"""
-feedrate = [25]
+feedrate = [25, 20, 30]
+#feedrate = [25]
 max_acceleration = 25
 max_deceleration = 25
 time_periods = []
@@ -42,7 +43,7 @@ time_x_list = []
 jerk_list = []
 acc_list = []
 vel_list = []
-for i in range (1):
+for i in range (len(feedrate)):
     print("Обработка блока " + str(i+1) + ".")
     type_path = Path_length_calculator.path_type(path_code[i])
     """Подсчет длины пути"""
@@ -72,7 +73,6 @@ for i in range (1):
         print("Тип блока - обычный")
     elif type_block[0] == 2:
         print("Тип блока - короткий")
-    path_l_list = [30]
     print("Длина пути: ", round(path_l_list[0], 3), "мм.")
     time_periods = Block_type.Time_Generator_n(feedrate[i], path_l_list[i], max_acceleration, max_deceleration)
     time_list.append(time_periods)
@@ -110,6 +110,10 @@ for i in range (1):
     vel_profile = []
     print("Обработка блока ", i+1, " закончена.")
     print("______________________________________")
-Graphs.Plotting_1(time_j_list, jerk_list, "Время, с", "Толчок, мм/с3", "Профиль толчка", "Толчок", time_list)
-Graphs.Plotting_1(time_x_list, acc_list, "Время, с", "Ускорение, мм/с2", "Профиль ускорения", "Ускорение", time_list)
-Graphs.Plotting_1(time_x_list, vel_list, "Время, с", "Скорость, мм/с", "Профиль скорости", "Скорость", time_list)
+#Graphs.Plotting_1(time_j_list, jerk_list, "Time, sec", "Jerk, мм/с3", "Профиль толчка", "Толчок", time_list)
+#Graphs.Plotting_1(time_x_list, acc_list, "Time, sec", "Acceleration, мм/с2", "Профиль ускорения", "Ускорение", time_list)
+#Graphs.Plotting_1(time_x_list, vel_list, "Time, sec", "Velocity, мм/с", "Профиль скорости", "Скорость", time_list)
+"""English language"""
+Graphs.Plotting_1(time_j_list, jerk_list, "Time, sec", "Jerk, mm/sec3", "Jerk profile", "Jerk", time_list)
+Graphs.Plotting_1(time_x_list, acc_list, "Time, sec", "Acceleration, mm/sec2", "b) Velocity profile with block overlap control", "Acceleration", time_list)
+Graphs.Plotting_1(time_x_list, vel_list, "Time, sec", "Velocity, mm/sec", "a) Velocity profile without block overlap control", "Velocity", time_list)
