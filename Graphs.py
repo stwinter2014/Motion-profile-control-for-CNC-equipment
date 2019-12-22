@@ -14,16 +14,17 @@ import math
 5. Название графика.
 6. 
 """
-def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per):
+def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per, filename):
     time_sum = 0
     time_sum_hole = 0
     alph = 0.2
+    fig = plt.figure()
     plt.plot(x,y,label=label)
     currentAxis = plt.gca()
     for i in range (len(time_per)):
         for j in range (len(time_per[i])):
             time_sum += time_per[i][j]
-        currentAxis.add_patch(mpl.patches.Rectangle((time_sum_hole, -100), time_sum, 1000, alpha=alph, color='#D5D0CF'))
+        currentAxis.add_patch(mpl.patches.Rectangle((time_sum_hole, -100), time_sum, 40, alpha=alph, color='#D5D0CF'))
         time_sum_hole += time_sum
         time_sum = 0
         if i%2 == 0:
@@ -35,18 +36,27 @@ def Plotting_1 (x, y, name_x, name_y, name_graph, label, time_per):
     plt.title(name_graph, fontsize = 13)
     plt.legend()
     plt.grid(b=None, which='major', axis='both', color = 'w')
+    plt.rcParams['pdf.fonttype'] = 42
+    plt.rcParams['font.family'] = 'Calibri'
     plt.show()
+    fig.savefig(filename + '.pdf')
 
-def Plotting_01 (x, y, name_x, name_y, name_graph, label):
+def Plotting_01 (x, y, name_x, name_y, name_graph, label, filename):
+    fig = plt.figure()
     plt.plot(x,y,label=label)
     plt.xlabel(name_x, fontsize = 13)
     plt.ylabel(name_y, fontsize = 13)
     plt.title(name_graph, fontsize = 13)
     plt.legend()
     plt.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
+    plt.rcParams['pdf.fonttype'] = 42
+    plt.rcParams['font.family'] = 'Calibri'
     plt.show()
+    fig.savefig(filename + '.pdf')
 
-def Plotting_02(x1, y1, x2, y2, name_x, name_y, name_graph, label1, label2):
+"""Две кривые на одном графике."""
+def Plotting_02(x1, y1, x2, y2, name_x, name_y, name_graph, label1, label2, filename):
+    fig = plt.figure()
     plt.plot(x1, y1, label = label1)
     plt.plot(x2, y2, label = label2, alpha=0.4)
     plt.xlabel(name_x, fontsize = 13)
@@ -54,7 +64,10 @@ def Plotting_02(x1, y1, x2, y2, name_x, name_y, name_graph, label1, label2):
     plt.title(name_graph, fontsize = 13)
     plt.legend()
     plt.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
+    plt.rcParams['pdf.fonttype'] = 42
+    plt.rcParams['font.family'] = 'Calibri'
     plt.show()
+    fig.savefig(filename + '.pdf')
 
 def Plotting_03_help(x1, y1, x2, y2, x3, y3, name_x, name_y, name_graph, label1, label2):
     plt.plot(x1, y1, label = label1)
@@ -69,7 +82,8 @@ def Plotting_03_help(x1, y1, x2, y2, x3, y3, name_x, name_y, name_graph, label1,
     plt.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
     plt.show()
 
-def Plotting_02_colors(x1, y1, x2, y2, name_x, name_y, name_graph, label1, label2):
+def Plotting_02_colors(x1, y1, x2, y2, name_x, name_y, name_graph, label1, label2, filename):
+    fig = plt.figure()
     plt.plot(x1, y1, color = 'r', label = label1)
     plt.plot(x2, y2, label = label2, color='b', alpha=0.5)
     plt.xlabel(name_x, fontsize = 13)
@@ -77,7 +91,10 @@ def Plotting_02_colors(x1, y1, x2, y2, name_x, name_y, name_graph, label1, label
     plt.title(name_graph, fontsize = 13)
     plt.legend()
     plt.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
+    plt.rcParams['pdf.fonttype'] = 42
+    plt.rcParams['font.family'] = 'Calibri'
     plt.show()
+    fig.savefig(filename + '.pdf')
 
 def Plotting_03(x1, y1, x2, y2, x3, y3, name_x, name_y, name_graph, label1, label2, label3):
     plt.plot(x1, y1, label = label1)
@@ -105,6 +122,9 @@ def Plotting_2 (x, y, x2, y2, name_x, name_y1, name_y2, name_graph1, name_graph2
     fig2.grid(b=None, which='major', axis='both', color = 'black', alpha = 0.4)
     plt.legend()
     plt.show()
+    plt.rcParams['pdf.fonttype'] = 42
+    plt.rcParams['font.family'] = 'Calibri'
+    fig.savefig('Noooo.pdf')
 
 def Plotting_22 (x, y, x2, y2, x3, y3, x4, y4, name_x, name_y, name_graph1, name_graph2, label1, label2):
     fig = plt.figure()

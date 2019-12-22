@@ -79,7 +79,7 @@ def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list, 
                            #"Ось x, мм", "Ось y, мм", "Траектория инструмента в угле " + str(i+1), "Истинная траектория", "Запрограммированная траектория")
         """English language"""
         Graphs.Plotting_02(spline[0], spline[1], spline[3], spline[4],
-                           "X, mm", "Y, mm", "Instrument trajectory at corner " + str(i+1), "Final trajectory", "Programmed trajectory")
+                           "X, mm", "Y, mm", "Tool trajectory at corner " + str(i+1), "Final trajectory", "Programmed trajectory", "6Spline" + str(i+1))
         #Graphs.Plotting_03_help(spline[0], spline[1], spline[3], spline[4], epsilon_x, epsilon_y,
                            #"Ось x, мм", "Ось y, мм", "Траектория инструмента в угле " + str(i+1), "Истинная траектория", "Запрограммированная траектория")
         for j in range (len(spline[0])):
@@ -88,10 +88,10 @@ def Trajectory_mapping(start_points, finish_points, tolerance_list, ratio_list, 
     spline_x.append(finish_points[len(start_points)-1][0])
     spline_y.append(finish_points[len(finish_points)-1][1])
     """Русский язык"""
-    Graphs.Plotting_02_colors(spline_x, spline_y, x_points, y_points, 
-                       "Ось x, мм", "Ось y, мм", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
+    #Graphs.Plotting_02_colors(spline_x, spline_y, x_points, y_points, 
+    #                   "Ось x, мм", "Ось y, мм", "Траектория инструмента", "Истинная траектория", "Запрограммированная траектория")
     """English language"""
     Graphs.Plotting_02_colors(spline_x, spline_y, x_points, y_points, 
-                       "X, mm", "Y, mm", "Instrument trajectory", "Final trajectory", "Programmed trajectory")
+                       "X, mm", "Y, mm", "Tool trajectory", "Final trajectory", "Programmed trajectory", "6TrajectoryH")
 
     return spline_x_out, spline_y_out, spline_z_out, spline[6], spline[7], spline[8]

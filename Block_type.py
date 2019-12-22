@@ -16,7 +16,13 @@ def Time_Generator_n(feedrate, length, max_acc, max_dec):
     time_acc = 2*feedrate/max_acc
     time_dec = 2*feedrate/max_dec
     time_const = 2*(length-(2*math.pow(feedrate, 2)/max_acc))/(max_acc*time_acc)
-    return time_acc, time_const, time_dec
+    feedrate_v = feedrate
+    while time_const < 0:
+        feedrate_v -= 0.1
+        time_acc = 2*feedrate_v/max_acc
+        time_dec = 2*feedrate_v/max_dec
+        time_const = 2*(length-(2*math.pow(feedrate_v, 2)/max_acc))/(max_acc*time_acc)
+    return time_acc, time_const, time_dec, feedrate_v
 
 def block_t_check_la (length, feedrate, max_acc, max_dec):
     type_res = []

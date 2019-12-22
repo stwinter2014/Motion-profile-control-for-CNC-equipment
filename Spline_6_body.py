@@ -26,7 +26,7 @@ y_p.append(finish_p_2[1])
 feedrate = [25, 30]
 "Степень точности обхода угла"
 Lt = 2
-n = 0.3
+n = 0.9
 d = Lt/(2*n+1)
 c = n*d
 e = ((7*n+16))/32*d
@@ -62,23 +62,15 @@ for i in range (len(Axes_spline[1])):
     spline_y.append(Axes_spline[1][i])
 spline_y.append(finish_p_2[1])
 
-Graphs.Plotting_02(spline_x, spline_y, x_p, y_p,
-                   "Ось x, мм", "Ось y, мм", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
+#Graphs.Plotting_02(spline_x, spline_y, x_p, y_p,
+#                   "Ось x, мм", "Ось y, мм", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория", 'da')
 """Русский язык"""
 #Graphs.Plotting_02(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
                    #"Ось x, мм", "Ось y, мм", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория")
 
 """English language"""
 Graphs.Plotting_02(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
-                   "X, mm", "Y, mm", "Bezier Curve", "Final trajectory", "Programmed trajectory")
-
-
-#Graphs.Plotting_03(Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4], cord_x, cord_y,
-                   #"Ось x", "Ось y", "Кривая Безье", "Истинная траектория", "Запрограммированная траектория", "da")
-#Graphs.Plotting_22(spline_x, spline_y, x_p, y_p, Axes_spline[0], Axes_spline[1], Axes_spline[3], Axes_spline[4],
-                   #"Ось x, мм", "Ось y, мм", "Траектория инструмента с кривой Безье", "Кривая Безье", "Истинная траектория",
-                   #"Запрограммированная траектория")
-
+                   "X, mm", "Y, mm", "Bezier Curve", "Final trajectory", "Programmed trajectory", '5Spline6big09')
 
 l_1 = Path_length_calculator.Path_linear(start_p_1, finish_p_1)
 l_2 = Path_length_calculator.Path_linear(start_p_2, finish_p_2)

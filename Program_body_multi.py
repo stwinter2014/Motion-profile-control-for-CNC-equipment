@@ -16,20 +16,24 @@ import math
 path_code = ["010", "010", "010"]
 
 """Данные об обработке"""
-feedrate = [25, 20, 30]
-#feedrate = [25]
-max_acceleration = 25
-max_deceleration = 25
+#feedrate = [25, 20, 30]
+#feedrate = [18]
+feedrate = [30, 30, 18, 25]
+max_acceleration = 15
+max_deceleration = 15
 time_periods = []
 time_interpolation = 0.05
 """Данные о перемещении"""
 path_l = 0
-st_point = [[60, 20, 0],
-            [140, 80, 0],
-            [220, 80, 0]]
-fn_point = [[140, 80, 0],
-            [220, 80, 0],
-            [270, 20, 0]]
+
+st_point = [[20, 10, 0],
+            [60, 40, 0],
+            [160, 40, 0],
+            [170, 20, 0]]
+fn_point = [[60, 40, 0],
+            [160, 40, 0],
+            [170, 20, 0],
+            [20, 10, 0]]
 "Данные для задания кругового движения"
 cn_point = [79.616,0,19.494]
 rad = 71
@@ -45,7 +49,7 @@ acc_list = []
 vel_list = []
 for i in range (len(feedrate)):
     print("Обработка блока " + str(i+1) + ".")
-    type_path = Path_length_calculator.path_type(path_code[i])
+    type_path = Path_length_calculator.path_type(path_code[0])
     """Подсчет длины пути"""
     if type_path == 1:
         print("Тип интерполяции - линейный.")
@@ -103,17 +107,18 @@ for i in range (len(feedrate)):
         for j in range (0,len(acc_profile[1])):
             time_x_list.append(acc_profile[1][j])
     acc_profile = []
-    vel_profile = Profile_generation.Velocity_profile(max_acceleration, max_deceleration, time_list[i][0], time_list[i][1], time_list[i][2], 0.05, 0, feedrate[i])
+    vel_profile = Profile_generation.Velocity_profile(max_acceleration, max_deceleration, time_list[i][0], time_list[i][1], time_list[i][2], 0.05, 0, time_list[i][3])
     for j in range (0, len(vel_profile[0])):
         vel_list.append(vel_profile[0][j])
     print("Максимальная достигнутая скорость на блоке: " + str(vel_profile[3]) + " мм/с.")
+    print("Максимальная достигнутая скорость на блоке: " + str(time_list[i][3]) + " мм/с.")
     vel_profile = []
     print("Обработка блока ", i+1, " закончена.")
     print("______________________________________")
-#Graphs.Plotting_1(time_j_list, jerk_list, "Time, sec", "Jerk, мм/с3", "Профиль толчка", "Толчок", time_list)
-#Graphs.Plotting_1(time_x_list, acc_list, "Time, sec", "Acceleration, мм/с2", "Профиль ускорения", "Ускорение", time_list)
-#Graphs.Plotting_1(time_x_list, vel_list, "Time, sec", "Velocity, мм/с", "Профиль скорости", "Скорость", time_list)
+#Graphs.Plotting_1(time_j_list, jerk_list, "Time, sec", "Толчок, мм/с3", "Профиль толчка", "Толчок", time_list)
+#Graphs.Plotting_1(time_x_list, acc_list, "Time, sec", "Ускорение, мм/с2", "Профиль ускорения", "Ускорение", time_list)
+#Graphs.Plotting_1(time_x_list, vel_list, "Time, sec", "Скорость, мм/с", "Профиль скорости", "Скорость", time_list)
 """English language"""
-Graphs.Plotting_1(time_j_list, jerk_list, "Time, sec", "Jerk, mm/sec3", "Jerk profile", "Jerk", time_list)
-Graphs.Plotting_1(time_x_list, acc_list, "Time, sec", "Acceleration, mm/sec2", "b) Velocity profile with block overlap control", "Acceleration", time_list)
-Graphs.Plotting_1(time_x_list, vel_list, "Time, sec", "Velocity, mm/sec", "a) Velocity profile without block overlap control", "Velocity", time_list)
+#Graphs.Plotting_1(time_j_list, jerk_list, "Time, sec", "Jerk, mm/sec3", "Jerk profile", "Jerk", time_list)
+Graphs.Plotting_1(time_x_list, acc_list, "Time, sec", "Acceleration, mm/sec2", "Acceleration profile", "Acceleration", time_list, '1Acc')
+Graphs.Plotting_1(time_x_list, vel_list, "Time, sec", "Velocity, mm/sec", "Velocity profile", "Velocity", time_list, '1Vel')

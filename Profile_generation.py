@@ -115,6 +115,7 @@ def Velocity_profile (acc_max, dec_max, time_acc, time_const, time_dec, time_ins
         vel_list += [vel_const]
         time_vellist += [time_instant]
         time_instant = time_instant + time_interpolation
+    #vel_const = feedrate
     if time_const == 0 and time_acc != 0:
         vel_max = vel_acc
     elif time_const == 0 and time_acc == 0:
